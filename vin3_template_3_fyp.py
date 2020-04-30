@@ -145,6 +145,440 @@ class Gui:
             self.editAreaTable2.insert(tk.INSERT, choice)
 
 
+    def student_list(self):
+
+        self.left_frame.pack_forget()
+        self.left_frame = Frame(self.root, background="black",
+                                borderwidth=5, relief="ridge",
+                                width=600)
+        self.left_frame.pack(side="left",
+                             fill="both",
+                             expand="yes",
+                             )
+
+        self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
+                                               font=("courier new", 15, "bold"))
+        self.editAreaTable.pack(fill="both", expand="yes", side="left")
+        '''
+        self.editAreaTable.insert(tk.INSERT,
+                                  "Order id: O001\n\nOrder time: 2/2/2020 11:11:11\n\nSuper Supreme x1 $168\nDelivery fee: $20\nTotal $188\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time: 30 min\n\n\n")
+        self.editAreaTable.insert(tk.INSERT,
+                                  "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
+        '''
+
+        self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20",
+                           command='')
+        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR6.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR7.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR8.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+
+        self.btnBack.config(command=lambda: self.last_page("table_sub"))
+        self.btnHome.config(command=lambda: self.home_page("table_sub"))
+
+        order_id = []
+        order_status = []
+        order_date_time = []
+        order_payment = []
+        order_address = []
+        order_shop = []
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select `ORDER_ID` from `order` where `MEMBER_ID` = '" + str(self.id) + "'")
+
+        for row in cur.fetchall():
+            order_id.append(row)
+        # print(str(order_id[0])[12:-1])
+
+
+
+
+        '''
+        x = 0
+        while x < len(order_id):
+            self.editAreaTable.insert(tk.INSERT, 'Order id: ' + str(order_id[x])[12:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Order status: ' + str(order_status[x])[18:-2] + '\n')
+
+            # print('test')
+            # print(str(order_address[0])[14:-1])
+
+            address_name = []
+            cur = self.conn.cursor()
+            cur.execute(
+                "select `Address` from `member_address` where `address_id` = '" + str(order_address[x])[14:-1] + "'")
+            for row in cur.fetchall():
+                address_name.append(row)
+            # print(str(address_name[0]))
+
+            self.editAreaTable.insert(tk.INSERT, 'Order address: ' + str(address_name[0])[11:-2] + '\n')
+
+            total_price = 0
+            delivery_fee = []
+            cur = self.conn.cursor()
+            cur.execute(
+                "select `delivery_fee` from `order` where `order_id` = '" + str(order_id[x])[12:-1] + "'")
+            for row in cur.fetchall():
+                delivery_fee.append(row)
+            # print(str(address_name[0]))
+
+            self.editAreaTable.insert(tk.INSERT, 'Delivery fee: $' + str(delivery_fee[0])[16:-1] + '\n')
+            total_price += float(str(delivery_fee[0])[16:-1])
+
+            shop = []
+            cur = self.conn.cursor()
+            cur.execute(
+                "select `shop_name` from `shop` where `shop_id` = '" + str(order_shop[x])[13:-2] + "'")
+            for row in cur.fetchall():
+                shop.append(row)
+            # print(str(address_name[0]))
+
+            self.editAreaTable.insert(tk.INSERT, 'Shop: ' + str(shop[0])[13:-1] + '\n')
+
+
+            payment_name = []
+            cur = self.conn.cursor()
+            cur.execute(
+                "select `Credit_card_number` from `member_payment` where `payment_id` = '" + str(order_payment[x])[
+                                                                                             14:-1] + "'")
+            for row in cur.fetchall():
+                payment_name.append(row)
+            # print(str(payment_name[0]))
+
+            self.editAreaTable.insert(tk.INSERT, 'Order address: ' + str(payment_name[0])[36:-2] + '\n')
+
+            # print("test2"+str(order_id[x])[12:-1])
+            order_product_id = []
+            cur = self.conn.cursor()
+            cur.execute(
+                "select `order_product_id` from `order_product` where `order_id` = '" + str(order_id[x])[12:-1] + "'")
+            for row in cur.fetchall():
+                order_product_id.append(row)
+            print(str(order_product_id[0])[20:-1])
+
+            self.editAreaTable.insert(tk.INSERT, 'Order product (No./Name/Qty/Price): ' + '\n')
+
+
+
+            y = 0
+            while y < len(order_product_id):
+
+                product_id = []
+                cur = self.conn.cursor()
+                cur.execute(
+                    "select `product_id` from `order_product` where `order_product_id` = '" + str(order_product_id[y])[
+                                                                                              20:-1] + "'")
+                for row in cur.fetchall():
+                    product_id.append(row)
+                # print(str(product_id[0])[16:-2])
+
+                product_name = []
+                cur = self.conn.cursor()
+                cur.execute(
+                    "select `product_name` from `product` where `product_id` = '" + str(product_id[0])[16:-2] + "'")
+                for row in cur.fetchall():
+                    product_name.append(row)
+                # print(str(product_name[0])[18:-2])
+
+
+                product_quantity = []
+                cur = self.conn.cursor()
+                cur.execute(
+                    "select `quantity` from `order_product` where `order_product_id` = '" + str(order_product_id[y])[
+                                                                                            20:-1] + "'")
+                for row in cur.fetchall():
+                    product_quantity.append(row)
+                # print(str(product_quantity[0])[12:-1])
+
+                product_price = []
+                cur = self.conn.cursor()
+                cur.execute(
+                    "select `price` from `order_product` where `order_product_id` = '" + str(order_product_id[y])[
+                                                                                         20:-1] + "'")
+                for row in cur.fetchall():
+                    product_price.append(row)
+                # print(str(product_price[0])[9:-1])
+                total_price += float(str(product_price[0])[9:-1])
+
+                product_link = []
+                cur = self.conn.cursor()
+                cur.execute(
+                    "select `LINK_PRODUCT` from `order_product` where `order_product_id` = '" + str(
+                        order_product_id[y])[20:-1] + "'")
+                for row in cur.fetchall():
+                    product_link.append(row)
+                print(str(product_link[0])[18:-2])
+
+                if str(product_link[0])[18:-2] == '/':
+                    self.editAreaTable.insert(tk.INSERT, str(y) + ' ' + str(product_name[0])[18:-2] + "   " + str(
+                        product_quantity[0])[12:-1] + "   $" + str(product_price[0])[9:-1] + '\n')
+                else:
+                    self.editAreaTable.insert(tk.INSERT,
+                                              '      -' + str(product_name[0])[18:-2] + "          " + "   $" + str(
+                                                  product_price[0])[9:-1] + '\n')
+
+                y += 1
+            self.editAreaTable.insert(tk.INSERT, 'Total: $' + str(total_price) + '\n')
+            self.editAreaTable.insert(tk.INSERT, '\n')
+            self.editAreaTable.insert(tk.INSERT, '\n')
+            self.editAreaTable.insert(tk.INSERT, '\n')
+
+            x += 1
+        '''
+
+        pass
+
+    def add_staff_receive(self):
+        str_birth = str(self.create_input4.get()) + '-' + str(self.create_input5.get()) + '-' + str(
+            self.create_input6.get())
+
+        cur = self.conn_fyp.cursor()
+        with self.conn_fyp.cursor() as cur:
+            cur.execute(
+                "INSERT INTO staff(first_name, last_name,  sex, date_of_birth,position,password) VALUES ('" + str(
+                    self.create_input1.get()) + "','" + str(self.create_input2.get()) + "','" + str(
+                    self.create_input3.get()) + "','" + str(str_birth) + "','"+str(self.create_input7.get())+"','N')")
+            self.conn_fyp.commit()
+
+        self.date_label.config(
+            text=str(self.user_name[0])[15:-2] + "      Staff " + self.create_input2.get() + ":Added      " + str(
+                self.date.strftime('%Y/%m/%d') + '      '))
+
+        self.create_input1.delete(0, 'end')
+        self.create_input2.delete(0, 'end')
+        self.create_input3.delete(0, 'end')
+        self.create_input4.delete(0, 'end')
+        self.create_input5.delete(0, 'end')
+        self.create_input6.delete(0, 'end')
+        self.create_input7.delete(0, 'end')
+
+        pass
+
+    def add_staff(self):
+
+        self.left_frame.pack_forget()
+        self.left_frame = Frame(self.root, background="black",
+                                borderwidth=5, relief="ridge",
+                                width=1000)
+        self.left_frame.pack(side="left",
+                             fill="both",
+                             expand="yes",
+                             )
+
+        self.frameL1 = tk.Frame(self.left_frame)
+        self.frameL1.pack()
+        self.frameL2 = tk.Frame(self.left_frame)
+        self.frameL2.pack()
+        self.frameL3 = tk.Frame(self.left_frame)
+        self.frameL3.pack()
+        self.frameL4 = tk.Frame(self.left_frame)
+        self.frameL4.pack()
+        self.frameL5 = tk.Frame(self.left_frame)
+        self.frameL5.pack()
+        self.frameL6 = tk.Frame(self.left_frame)
+        self.frameL6.pack()
+        self.frameL7 = tk.Frame(self.left_frame)
+        self.frameL7.pack()
+        self.frameL8 = tk.Frame(self.left_frame)
+        self.frameL8.pack()
+        self.frameL9 = tk.Frame(self.left_frame)
+        self.frameL9.pack()
+        self.frameL10 = tk.Frame(self.left_frame)
+        self.frameL10.pack()
+        self.frameL11 = tk.Frame(self.left_frame)
+        self.frameL11.pack()
+
+        self.create_title1 = tk.Label(self.frameL1, text="New Staff", font=("Helvetica", 30),
+                                      fg="white",
+                                      background="black")
+        self.create_title1.pack(side=tk.LEFT)
+
+        self.create_title2 = tk.Label(self.frameL3, text="Please input the followings", font=("Helvetica", 10),
+                                      fg="white",
+                                      background="black")
+        self.create_title2.pack(side=tk.LEFT)
+
+        self.create_label1 = tk.Label(self.frameL4, text="First Name: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label1.pack(side=tk.LEFT)
+
+        self.create_input1 = tk.Entry(self.frameL4, text="", background="white", width=100)
+        self.create_input1.pack(side=tk.LEFT)
+
+        self.create_label2 = tk.Label(self.frameL5, text="Last Name: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label2.pack(side=tk.LEFT)
+
+        self.create_input2 = tk.Entry(self.frameL5, text="", background="white", width=100)
+        self.create_input2.pack(side=tk.LEFT)
+
+        self.create_label3 = tk.Label(self.frameL6, text="Sex (M/F): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label3.pack(side=tk.LEFT)
+
+        self.create_input3 = tk.Entry(self.frameL6, text="", background="white", width=100)
+        self.create_input3.pack(side=tk.LEFT)
+
+        self.create_label4 = tk.Label(self.frameL7, text="Date of Birth (Date): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label4.pack(side=tk.LEFT)
+
+        self.create_input4 = tk.Entry(self.frameL7, text="", background="white", width=100)
+        self.create_input4.pack(side=tk.LEFT)
+
+        self.create_label5 = tk.Label(self.frameL8, text="Date of Birth (Month): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label5.pack(side=tk.LEFT)
+
+        self.create_input5 = tk.Entry(self.frameL8, text="", background="white", width=100)
+        self.create_input5.pack(side=tk.LEFT)
+
+        self.create_label6 = tk.Label(self.frameL9, text="Date of Birth (Year): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label6.pack(side=tk.LEFT)
+
+        self.create_input6 = tk.Entry(self.frameL9, text="", background="white", width=100)
+        self.create_input6.pack(side=tk.LEFT)
+
+        self.create_label7 = tk.Label(self.frameL10, text="Position: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label7.pack(side=tk.LEFT)
+
+        self.create_input7 = tk.Entry(self.frameL10, text="", background="white", width=100)
+        self.create_input7.pack(side=tk.LEFT)
+
+        self.create_submit = tk.Button(self.frameL11, text='Submit', font=("Helvetica", 20, "bold "), fg="white",
+                                       bg="dark green",
+                                       width=12, height=2, command=lambda: self.add_staff_receive())
+        self.create_submit.pack(side=tk.LEFT)
+        self.btnHome.config(command=lambda: self.home_page("table_sub"))
+        pass
+
+    def add_student_receive(self):
+        str_birth=str(self.create_input4.get())+'-'+str(self.create_input5.get())+'-'+str(self.create_input6.get())
+
+        cur = self.conn_fyp.cursor()
+        with self.conn_fyp.cursor() as cur:
+            cur.execute(
+                "INSERT INTO student(first_name, last_name,  sex, date_of_birth,face_cap,face_train) VALUES ('" + str(
+                    self.create_input1.get()) + "','" + str(self.create_input2.get()) + "','" + str(
+                    self.create_input3.get()) + "','" + str(str_birth) +  "','N','N')")
+            self.conn_fyp.commit()
+
+        self.date_label.config(
+            text=str(self.user_name[0])[15:-2] + "      Student " + self.create_input2.get() + ":Added      " + str(
+                self.date.strftime('%Y/%m/%d') + '      '))
+
+        self.create_input1.delete(0, 'end')
+        self.create_input2.delete(0, 'end')
+        self.create_input3.delete(0, 'end')
+        self.create_input4.delete(0, 'end')
+        self.create_input5.delete(0, 'end')
+        self.create_input6.delete(0, 'end')
+
+
+
+
+        pass
+
+    def add_student(self):
+
+        self.left_frame.pack_forget()
+        self.left_frame = Frame(self.root, background="black",
+                                borderwidth=5, relief="ridge",
+                                width=1000)
+        self.left_frame.pack(side="left",
+                             fill="both",
+                             expand="yes",
+                             )
+
+        self.frameL1 = tk.Frame(self.left_frame)
+        self.frameL1.pack()
+        self.frameL2 = tk.Frame(self.left_frame)
+        self.frameL2.pack()
+        self.frameL3 = tk.Frame(self.left_frame)
+        self.frameL3.pack()
+        self.frameL4 = tk.Frame(self.left_frame)
+        self.frameL4.pack()
+        self.frameL5 = tk.Frame(self.left_frame)
+        self.frameL5.pack()
+        self.frameL6 = tk.Frame(self.left_frame)
+        self.frameL6.pack()
+        self.frameL7 = tk.Frame(self.left_frame)
+        self.frameL7.pack()
+        self.frameL8 = tk.Frame(self.left_frame)
+        self.frameL8.pack()
+        self.frameL9 = tk.Frame(self.left_frame)
+        self.frameL9.pack()
+        self.frameL10 = tk.Frame(self.left_frame)
+        self.frameL10.pack()
+        self.frameL11 = tk.Frame(self.left_frame)
+        self.frameL11.pack()
+
+        self.create_title1 = tk.Label(self.frameL1, text="New Student", font=("Helvetica", 30),
+                                      fg="white",
+                                      background="black")
+        self.create_title1.pack(side=tk.LEFT)
+
+        self.create_title2 = tk.Label(self.frameL3, text="Please input the followings", font=("Helvetica", 10),
+                                     fg="white",
+                                     background="black")
+        self.create_title2.pack(side=tk.LEFT)
+
+        self.create_label1 = tk.Label(self.frameL4, text="First Name: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label1.pack(side=tk.LEFT)
+
+        self.create_input1 = tk.Entry(self.frameL4, text="", background="white", width=100)
+        self.create_input1.pack(side=tk.LEFT)
+
+        self.create_label2 = tk.Label(self.frameL5, text="Last Name: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label2.pack(side=tk.LEFT)
+
+        self.create_input2 = tk.Entry(self.frameL5, text="", background="white", width=100)
+        self.create_input2.pack(side=tk.LEFT)
+
+        self.create_label3 = tk.Label(self.frameL6, text="Sex (M/F): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label3.pack(side=tk.LEFT)
+
+        self.create_input3 = tk.Entry(self.frameL6, text="", background="white", width=100)
+        self.create_input3.pack(side=tk.LEFT)
+
+        self.create_label4 = tk.Label(self.frameL7, text="Date of Birth (Date): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label4.pack(side=tk.LEFT)
+
+        self.create_input4 = tk.Entry(self.frameL7, text="", background="white", width=100)
+        self.create_input4.pack(side=tk.LEFT)
+
+        self.create_label5 = tk.Label(self.frameL8, text="Date of Birth (Month): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label5.pack(side=tk.LEFT)
+
+        self.create_input5 = tk.Entry(self.frameL8, text="", background="white", width=100)
+        self.create_input5.pack(side=tk.LEFT)
+
+        self.create_label6 = tk.Label(self.frameL9, text="Date of Birth (Year): ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label6.pack(side=tk.LEFT)
+
+        self.create_input6 = tk.Entry(self.frameL9, text="", background="white", width=100)
+        self.create_input6.pack(side=tk.LEFT)
+
+
+        self.create_submit = tk.Button(self.frameL10, text='Submit', font=("Helvetica", 20, "bold "), fg="white",
+                                       bg="dark green",
+                                       width=12, height=2, command=lambda: self.add_student_receive())
+        self.create_submit.pack(side=tk.LEFT)
+        self.btnHome.config(command=lambda: self.home_page("table_sub"))
+        pass
+
+
+
     def add_reco_template(self,page):
         '''
         when button clicked
@@ -639,51 +1073,71 @@ class Gui:
 
         self.btn_tb = [[0 for x in range(100)] for y in range(1)]
         for i in range(0, 5):
-            self.btn_tb[0][i] = tk.Button(self.frameL3, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL3, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
 
         for i in range(6, 11):
-            self.btn_tb[0][i] = tk.Button(self.frameL4, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL4, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
         for i in range(11, 16):
-            self.btn_tb[0][i] = tk.Button(self.frameL5, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL5, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
         for i in range(16, 21):
-            self.btn_tb[0][i] = tk.Button(self.frameL6, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL6, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
         for i in range(21, 26):
-            self.btn_tb[0][i] = tk.Button(self.frameL7, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL7, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
         for i in range(26, 31):
-            self.btn_tb[0][i] = tk.Button(self.frameL8, text='', font=("Helvetica", 10, "bold "), background="grey20",
-                                          fg='white', width=30, height=6,
+            self.btn_tb[0][i] = tk.Button(self.frameL8, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
+                                          command='')
+            self.btn_tb[0][i].pack(side=tk.LEFT)
+        for i in range(31, 36):
+            self.btn_tb[0][i] = tk.Button(self.frameL9, text='', font=("Helvetica", 20, "bold "), background="grey20",
+                                          fg='white', width=14, height=2,
                                           command='')
             self.btn_tb[0][i].pack(side=tk.LEFT)
 
+
+
+
+
+
+
         self.btn_tb[0][0].config(text="Face Capture", command=lambda: self.add_reco_template('cap'))
         self.btn_tb[0][1].config(text="Face Trainning", command=lambda: self.add_reco_template('train'))
+        self.btn_tb[0][6].config(text="New Student", command=lambda: self.add_student())
+        self.btn_tb[0][7].config(text="New Staff", command=lambda: self.add_staff())
+        self.btn_tb[0][8].config(text="Student List", command=lambda: self.student_list())
+        self.btn_tb[0][9].config(text="Staff List", command=lambda: self.add_reco_template('train'))
 
-        self.btnTR1.config(text='My Order', font=("Helvetica", 20, "bold "), bg='forest green',
+
+
+
+
+
+        self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg='',
                            command=lambda: self.my_order())
 
-        self.btnTR2.config(text='My Account', font=("Helvetica", 20, "bold "), bg='forest green',
+        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg='',
                            command=lambda: self.my_account())
 
-        self.btnTR3.config(text='My Address', font=("Helvetica", 20, "bold "), bg='forest green',
-                           command=lambda: self.my_address())
+        self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg='',
+                           command='')
 
-        self.btnTR4.config(text='My Payment', font=("Helvetica", 20, "bold "), bg='forest green',
-                           command=lambda: self.my_payment())
+        self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg='',
+                           command='')
 
         self.btnTR5.config(text='', background="grey20", font=("Helvetica", 20, "bold "), command='')
 
@@ -864,8 +1318,9 @@ class Gui:
 
 def main(id, window):
     root = tk.Tk()
-    Gui(root, id)
     window.destroy()
+    Gui(root, id)
+
     root.mainloop()
 
 

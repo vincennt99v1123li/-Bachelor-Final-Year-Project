@@ -51,6 +51,7 @@ class Gui:
             print(str(id_flag[0])[18:-1])
         if str(id_flag[0])[18:-1] != '':
             vin3_template_3_fyp_att.main((str(id_flag[0])[18:-1]),self.root)
+        else:
             pass
 
     def password_receive(self):
@@ -61,7 +62,7 @@ class Gui:
 
         pw=[]
         cur = self.conn.cursor()
-        cur.execute("select password from staff where username = '"+str(self.input_list[0])+"'")
+        cur.execute("select password from staff where staff_id = '"+str(self.input_list[0])+"'")
         for row in cur.fetchall():
             pw.append(row)
             print(pw)
