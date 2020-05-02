@@ -128,7 +128,7 @@ class Gui:
     def __init__(self, root):
         self.root = root
         self.root.geometry('1920x1080')
-        self.root.title("Reco+")
+        self.root.title("Reco+ (Staff)")
 
         self.left_frame = Frame(self.root, background="black",
                                 borderwidth=5, relief="ridge",
@@ -168,7 +168,7 @@ class Gui:
         self.name_label3.pack()
         self.name_label4 = tk.Label(self.frameL4, text="Reco+", font=("Helvetica", 50, "bold italic"), fg="white",background="black")
         self.name_label4.pack()
-        self.name_label5 = tk.Label(self.frameL5, text="Main", font=("Helvetica", 30, "bold italic"), fg="white",background="black")
+        self.name_label5 = tk.Label(self.frameL5, text="Staff", font=("Helvetica", 30, "bold italic"), fg="white",background="black")
         self.name_label5.pack()
         self.name_label6 = tk.Label(self.frameL6, text="", background="black")
         self.name_label6.pack()

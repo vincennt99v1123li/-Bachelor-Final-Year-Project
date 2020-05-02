@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2020 at 04:10 PM
+-- Generation Time: May 02, 2020 at 12:15 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -29,18 +29,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `course` (
   `course_id` int(10) NOT NULL,
-  `course_name` char(50) NOT NULL
+  `course_name` char(50) NOT NULL,
+  `staff_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`course_id`, `course_name`) VALUES
-(1, 'A'),
-(2, 'B'),
-(3, 'C'),
-(4, 'D');
+INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
+(1, 'A (Tut)(G1)', 123),
+(2, 'A (Lec)', 123),
+(3, 'A (Tut)(G2)', 125),
+(4, 'D', 123),
+(5, 'E', 125),
+(6, 'F', 125);
 
 -- --------------------------------------------------------
 
@@ -54,7 +57,6 @@ CREATE TABLE `course_timetable` (
   `week` int(10) NOT NULL,
   `day` char(10) NOT NULL,
   `time` char(10) NOT NULL,
-  `class` char(10) NOT NULL,
   `room` char(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -62,9 +64,9 @@ CREATE TABLE `course_timetable` (
 -- Dumping data for table `course_timetable`
 --
 
-INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `week`, `day`, `time`, `class`, `room`) VALUES
-(1, 1, 1, '28/4/2020', '11:00', 'Lecture', '1001'),
-(2, 2, 10, '28/4/2020', '13:00', 'Lecture', '103');
+INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `week`, `day`, `time`, `room`) VALUES
+(1, 1, 1, '28/4/2020', '11:00', '1001'),
+(2, 2, 10, '28/4/2020', '13:00', '103');
 
 -- --------------------------------------------------------
 
@@ -110,19 +112,21 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 
 CREATE TABLE `staff` (
   `staff_id` int(100) NOT NULL,
-  `username` char(10) NOT NULL,
   `password` char(10) NOT NULL,
   `first_name` char(50) NOT NULL,
   `last_name` char(10) NOT NULL,
-  `position` char(10) NOT NULL
+  `position` char(10) NOT NULL,
+  `sex` char(1) NOT NULL,
+  `date_of_birth` char(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_id`, `username`, `password`, `first_name`, `last_name`, `position`) VALUES
-(1, '123', '123', 'Eric', 'Panda', 'teacher');
+INSERT INTO `staff` (`staff_id`, `password`, `first_name`, `last_name`, `position`, `sex`, `date_of_birth`) VALUES
+(123, '123', 'Eric', 'Panda', 'Teacher', 'M', '23-2-1999'),
+(125, '246', 'hello3', 'Chan1', 'Teacher', 'M', '23-1-1990');
 
 -- --------------------------------------------------------
 
@@ -147,7 +151,8 @@ CREATE TABLE `student` (
 INSERT INTO `student` (`first_name`, `last_name`, `sex`, `date_of_birth`, `student_id`, `face_cap`, `face_train`) VALUES
 ('Vincent', 'Li', 'M', '23-11-1999', 101, 'Y', 'Y'),
 ('Ada', 'Chan', 'F', '28-10-1998', 102, 'Y', 'Y'),
-('hello', 'Li', 'M', '23-11-1999', 103, 'N', 'Y');
+('hello3', 'Li', 'M', '23-11-1999', 103, 'Y', 'Y'),
+('yo', 'wong', 'F', '11-4-2000', 104, 'Y', 'N');
 
 -- --------------------------------------------------------
 
@@ -212,7 +217,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `course_timetable`
@@ -230,13 +235,13 @@ ALTER TABLE `login_record`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `student_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
