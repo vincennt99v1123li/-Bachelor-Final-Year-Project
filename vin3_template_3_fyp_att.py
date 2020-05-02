@@ -338,7 +338,7 @@ class Gui:
         #print(confirm_flag)
         if confirm_flag == 'Success':
             #print('1')
-            self.date_label.config(text=str(self.user_name[0])[1:-1] + "      "+str(self.week[0] )[1:-1]+ + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":OK      " + str(
+            self.date_label.config(text=str(self.user_name[0])[1:-1]  + "  Timetable ID: " +str(self.id)+"  " +str(self.add_list)+str(first_name[0])[16:-2] + ":OK      " + str(
                 self.date.strftime('%Y/%m/%d') + '      '))
             pass
         self.add_list=''
@@ -526,16 +526,11 @@ class Gui:
         for row in cur_fyp.fetchall():
             self.user_name.append(row)
 
-        self.week = []
-        cur_fyp = self.conn_fyp.cursor()
-        cur_fyp.execute(
-            "select week from course_timetable where time_table_id ='" + str(self.id) + "'")
-        for row in cur_fyp.fetchall():
-            self.week.append(row)
+
 
         #print(str(self.user_name[0]))
         self.date = datetime.datetime.now()
-        self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[1:-1] + "      "+str(self.week[0] )[1:-1]+ "      " + str(
+        self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[1:-1] + "      Timetable ID: " +str(self.id)+" "+ str(
             self.date.strftime('%Y/%m/%d') + '      '), font=("courier new", 20, "bold"), bg='black', fg="white")
         self.date_label.pack(side=tk.LEFT)
 

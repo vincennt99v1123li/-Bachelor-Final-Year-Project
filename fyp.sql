@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2020 at 12:15 PM
+-- Generation Time: May 02, 2020 at 06:24 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -38,10 +38,10 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
-(1, 'A (Tut)(G1)', 123),
-(2, 'A (Lec)', 123),
+(1, 'A (Tut)(G1)', 124),
+(2, 'A (Lec)', 124),
 (3, 'A (Tut)(G2)', 125),
-(4, 'D', 123),
+(4, 'D', 124),
 (5, 'E', 125),
 (6, 'F', 125);
 
@@ -54,7 +54,6 @@ INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
 CREATE TABLE `course_timetable` (
   `time_table_id` int(10) NOT NULL,
   `course_id` int(10) NOT NULL,
-  `week` int(10) NOT NULL,
   `day` char(10) NOT NULL,
   `time` char(10) NOT NULL,
   `room` char(10) NOT NULL
@@ -64,9 +63,11 @@ CREATE TABLE `course_timetable` (
 -- Dumping data for table `course_timetable`
 --
 
-INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `week`, `day`, `time`, `room`) VALUES
-(1, 1, 1, '28/4/2020', '11:00', '1001'),
-(2, 2, 10, '28/4/2020', '13:00', '103');
+INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `day`, `time`, `room`) VALUES
+(1, 1, '28-4-2020', '11:30', '1034'),
+(2, 2, '28-4-2020', '13:00', '103'),
+(3, 2, '12-3-2020', '11:30', '123'),
+(4, 2, '4-5-2020', '12:00', '101');
 
 -- --------------------------------------------------------
 
@@ -102,7 +103,8 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 (103, '2020-04-30 17:33:37.081180', 63, 1),
 (101, '2020-04-30 21:11:54.885344', 64, 1),
 (101, '2020-04-30 21:37:45.389520', 65, 1),
-(101, '2020-04-30 21:49:38.921620', 66, 2);
+(101, '2020-04-30 21:49:38.921620', 66, 2),
+(102, '2020-05-03 00:11:07.685656', 67, 2);
 
 -- --------------------------------------------------------
 
@@ -125,7 +127,8 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staff_id`, `password`, `first_name`, `last_name`, `position`, `sex`, `date_of_birth`) VALUES
-(123, '123', 'Eric', 'Panda', 'Teacher', 'M', '23-2-1999'),
+(123, '123', 'Vin2', 'Vin2', 'Admin', 'M', '23-11-1999'),
+(124, '123', 'Eric', 'Panda', 'Teacher', 'M', '23-2-1999'),
 (125, '246', 'hello3', 'Chan1', 'Teacher', 'M', '23-1-1990');
 
 -- --------------------------------------------------------
@@ -173,7 +176,8 @@ INSERT INTO `student_course` (`student_id`, `course_id`) VALUES
 (101, 1),
 (101, 2),
 (102, 2),
-(102, 3);
+(102, 3),
+(103, 2);
 
 --
 -- Indexes for dumped tables
@@ -223,13 +227,13 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `login_record`
 --
 ALTER TABLE `login_record`
-  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `staff`
