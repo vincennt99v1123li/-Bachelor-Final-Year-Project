@@ -339,7 +339,7 @@ class Gui:
         if confirm_flag == 'Success':
             #print('1')
             self.date_label.config(text=str(self.user_name[0])[1:-1]  + "  Timetable ID: " +str(self.id)+"  " +str(self.add_list)+str(first_name[0])[16:-2] + ":OK      " + str(
-                self.date.strftime('%Y/%m/%d') + '      '))
+                self.date.strftime('%d-%m-%Y') + '      '))
             pass
         self.add_list=''
         self.editAreaTable2.delete("1.0", END)
@@ -531,7 +531,7 @@ class Gui:
         #print(str(self.user_name[0]))
         self.date = datetime.datetime.now()
         self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[1:-1] + "      Timetable ID: " +str(self.id)+" "+ str(
-            self.date.strftime('%Y/%m/%d') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
+            self.date.strftime('%d-%m-%Y') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
         self.date_label.pack(side=tk.LEFT)
 
         self.clock1 = clock.Clock(self.frameRt)

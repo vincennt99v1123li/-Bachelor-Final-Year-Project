@@ -565,7 +565,7 @@ class Gui:
 
 
         self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.create_input2.get()) + ":Has Been updated      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '))
+            self.date.strftime('%d-%m-%Y') + '      '))
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
         self.create_input3.delete(0, 'end')
@@ -892,7 +892,7 @@ class Gui:
 
 
         self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.create_input2.get()) + ":Has Been updated      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '))
+            self.date.strftime('%d-%m-%Y') + '      '))
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
         self.create_input3.delete(0, 'end')
@@ -1587,7 +1587,7 @@ class Gui:
 
 
         self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.option_list) + ":Has Been updated      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '))
+            self.date.strftime('%d-%m-%Y') + '      '))
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
 
@@ -2067,7 +2067,7 @@ class Gui:
         if (result_list) != []:
             self.date_label.config(
                 text=str(self.user_name[0])[15:-2] + "      " + "Already exeisted" + "      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
         else:
 
@@ -2082,7 +2082,7 @@ class Gui:
                                             cursorclass=pymysql.cursors.DictCursor)
             self.cur_fyp = self.db_fyp.cursor()
 
-            self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.stdid_value) + ":Has Been added to" +str(self.cid_value)+"      " + str(self.date.strftime('%Y/%m/%d') + '      '))
+            self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.stdid_value) + ":Has Been added to" +str(self.cid_value)+"      " + str(self.date.strftime('%d-%m-%Y') + '      '))
 
         self.create_label1.config(text='First Name:')
         self.create_label2.config(text='Last Name:' )
@@ -2393,7 +2393,7 @@ class Gui:
         if (result_list) == []:
             self.date_label.config(
                 text=str(self.user_name[0])[15:-2] + "      " + "Already not exeisted" + "      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
         else:
 
@@ -2410,7 +2410,7 @@ class Gui:
                                             cursorclass=pymysql.cursors.DictCursor)
             self.cur_fyp = self.db_fyp.cursor()
 
-            self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.stdid_value) + ":Has Been delete from" +str(self.cid_value)+"      " + str(self.date.strftime('%Y/%m/%d') + '      '))
+            self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str(self.stdid_value) + ":Has Been delete from" +str(self.cid_value)+"      " + str(self.date.strftime('%d-%m-%Y') + '      '))
 
         self.create_label1.config(text='First Name:')
         self.create_label2.config(text='Last Name:' )
@@ -2726,7 +2726,7 @@ class Gui:
 
 
         self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str( self.option_list)+ " :inserted      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '))
+            self.date.strftime('%d-%m-%Y') + '      '))
         #self.create_input1.delete(0, 'end')
         #self.create_input2.delete(0, 'end')
         self.create_input3.delete(0, 'end')
@@ -3029,7 +3029,7 @@ class Gui:
 
 
         self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " + str( self.option_list)+ " :updated      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '))
+            self.date.strftime('%d-%m-%Y') + '      '))
         #self.create_input1.delete(0, 'end')
         #self.create_input2.delete(0, 'end')
         self.create_input2.delete(0, 'end')
@@ -3396,24 +3396,41 @@ class Gui:
             teacher_last_name.append(row)
         #print(str(teacher_last_name[0])[15:-2])
 
+        section3_flag = False
+        if self.section == 3:
+            student_id=[]
+            cur = self.conn_fyp.cursor()
+            cur.execute("select student_id from student_course where course_id = '" + str(option_list) + "'")
+
+            for row in cur.fetchall():
+                student_id.append(row)
+
+
+            i = 0
+            while i < len(student_id) and section3_flag == False:
+                if str(student_id[i])[15:-1] == str(self.id):
+                    section3_flag = True
+                i += 1
+
+        if (self.section == 2 and str(staff_id[0])[13:-1] == str(
+                self.id)) or self.section == 1 or section3_flag == True:
+
+
+            self.editAreaTable.delete("1.0", END)
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
+            self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
+
+
+            x = 0
+            while x < len(time_table_id):
+                self.editAreaTable.insert(tk.INSERT, str(time_table_id[x])[18:-1]+' '+str(day[x])[9:-2]+' '+str(time[x])[10:-2]+' '+str(room[x])[10:-2] + '\n')
 
 
 
-        self.editAreaTable.delete("1.0", END)
-        self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
-        self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
-
-
-        x = 0
-        while x < len(time_table_id):
-            self.editAreaTable.insert(tk.INSERT, str(time_table_id[x])[18:-1]+' '+str(day[x])[9:-2]+' '+str(time[x])[10:-2]+' '+str(room[x])[10:-2] + '\n')
-
-
-
-            x += 1
+                x += 1
 
         pass
 
@@ -3528,6 +3545,129 @@ class Gui:
 
         pass
 
+    def view_timetable_today(self):
+        self.editAreaTable.delete("1.0", END)
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+        course_name=[]
+        staff_id = []
+        student_id = []
+        course_id=[]
+
+        teacher_first_name=[]
+        teacher_last_name = []
+        student_first_name = []
+        student_last_name=[]
+
+        date_today_day=str(self.date.strftime('%d'))
+        date_today_month = str(self.date.strftime('%m'))
+        date_today_year = str(self.date.strftime('%Y'))
+
+
+        print(date_today_day)
+        print(date_today_month)
+        print(date_today_year)
+
+        if date_today_day[0] == "0":
+            date_today_day=date_today_day[1]
+            #print(date_today_day)
+        if date_today_month[0] == "0":
+            date_today_month=date_today_month[1]
+
+        date_today=date_today_day+"-"+date_today_month+"-"+date_today_year
+        day = []
+        time = []
+        room = []
+
+
+        if self.section == 2:
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course.course_name from course inner join course_timetable on course_timetable.course_id= course.course_id where course.staff_id = '" + str(self.id) + "' and course_timetable.day ='"+date_today+"' order by course.course_name")
+
+            for row in cur.fetchall():
+                course_name.append(row)
+            # print(str(course_name[0])[17:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course.course_id from course inner join course_timetable on course.course_id = course_timetable.course_id where course.staff_id = '" +  str(self.id)+ "' and course_timetable.day ='"+date_today+"' order by course.course_name")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+            # print(str(course_id[0])[14:-1])
+
+        elif self.section == 3:
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select course.course_name from course inner join student_course on student_course.course_id = course.course_id inner join course_timetable on course.course_id = course_timetable.course_id where student_course.student_id = '"+str(self.id)+"'and course_timetable.day ='"+date_today+"' order by course.course_name")
+
+            for row in cur.fetchall():
+                course_name.append(row)
+            # print(str(course_name[0])[17:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute( "select course.course_id from course inner join student_course on student_course.course_id = course.course_id inner join course_timetable on course.course_id = course_timetable.course_id where student_course.student_id = '" + str(self.id) + "'and course_timetable.day ='"+date_today+"' order by course.course_name")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+                # print(str(course_id[0])[14:-1])
+
+        i=0
+        while i<len(course_id):
+            day = []
+            time = []
+            room = []
+            time_table_id = []
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select time_table_id  from course_timetable where course_id = '" +str(course_id[i])[14:-1] + "' and day ='"+date_today+"'")
+
+            for row in cur.fetchall():
+                time_table_id.append(row)
+            # print(str(time_table_id[0])[18:-1])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select day  from course_timetable where course_id = '" + str(course_id[i])[14:-1] + "' and day ='"+date_today+"'")
+
+            for row in cur.fetchall():
+                day.append(row)
+            # print(str(day[0])[9:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select time  from course_timetable where course_id = '" + str(course_id[i])[14:-1] + "' and day ='"+date_today+"'")
+
+            for row in cur.fetchall():
+                time.append(row)
+            # print(str(time[0])[10:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select room  from course_timetable where course_id = '" + str(course_id[i])[14:-1]+ "' and day ='"+date_today+"'")
+
+            for row in cur.fetchall():
+                room.append(row)
+            # print(str(room[0])[9:-2])
+
+            x = 0
+            while x < len(time_table_id):
+                self.editAreaTable.insert(tk.INSERT,
+                                              str(time_table_id[x])[18:-1] + ' ' + str(day[x])[9:-2] + ' ' + str(
+                                                  time[x])[10:-2] + ' ' + str(room[x])[10:-2] + '\n')
+
+                x += 1
+            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+            i+=1
+
+
+
+
+
+        pass
+
     def view_timetable(self):
         self.del_list = ''
 
@@ -3558,9 +3698,10 @@ class Gui:
         if self.section == 2 or self.section == 3:
             self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
                                command=lambda: self.view_timetable_all())
+            self.btnTR2.config(text='Today', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda: self.view_timetable_today())
         else:
             self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+            self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -3667,6 +3808,139 @@ class Gui:
 
 
 
+    def view_attendence_search_student(self):
+
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+
+        course_id=[]
+        course_name=[]
+        staff_id = []
+        time_table_id = []
+
+        teacher_first_name=[]
+        teacher_last_name = []
+
+
+        day=[]
+        time=[]
+        room=[]
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select course_id from course_timetable where time_table_id = '" + str(option_list) + "'")
+
+        for row in cur.fetchall():
+            course_id.append(row)
+        #print(str(course_id[0])[14:-1])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select course_name from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+
+        for row in cur.fetchall():
+            course_name.append(row)
+        #print(str(course_name[0])[17:-2])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select staff_id from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+
+        for row in cur.fetchall():
+            staff_id.append(row)
+        #print(str(staff_id[0])[13:-1])
+
+
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select day  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
+
+        for row in cur.fetchall():
+            day.append(row)
+        #print(str(day[0])[9:-2])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select time  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
+
+        for row in cur.fetchall():
+            time.append(row)
+        #print(str(time[0])[10:-2])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select room  from course_timetable where time_table_id = '" +str(option_list) + "' order by day")
+
+        for row in cur.fetchall():
+            room.append(row)
+        #print(str(room[0])[9:-2])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select first_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
+
+        for row in cur.fetchall():
+            teacher_first_name.append(row)
+        #print(str(teacher_first_name[0])[16:-2])
+
+        cur = self.conn_fyp.cursor()
+        cur.execute("select last_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
+
+        for row in cur.fetchall():
+            teacher_last_name.append(row)
+        #print(str(teacher_last_name[0])[15:-2])
+
+
+        section3_flag = False
+        if self.section == 3:
+            student_id = []
+            cur = self.conn_fyp.cursor()
+            cur.execute("select student_id from student_course where course_id = '" + str(course_id[0])[14:-1] + "'")
+
+            for row in cur.fetchall():
+                student_id.append(row)
+
+            i = 0
+            while i < len(student_id) and section3_flag == False:
+                if str(student_id[i])[15:-1] == str(self.id):
+                    section3_flag = True
+                i += 1
+
+        if (self.section == 2 and str(staff_id[0])[13:-1] == str(
+                self.id)) or self.section == 1 or section3_flag == True:
+
+            self.editAreaTable.delete("1.0", END)
+            self.editAreaTable.insert(tk.INSERT, 'Timetable id: ' + str(option_list) + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[0])[14:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[10:-2] + '\n\n\n')
+
+
+
+
+
+            student_id=[]
+            student_first_name=[]
+            student_last_name = []
+            student_attendence=[]
+            student_attendence_flag = []
+
+            student_attendence = []
+            cur = self.conn_fyp.cursor()
+            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+                option_list) + "'")
+
+            for row in cur.fetchall():
+                student_attendence.append(row)
+            # print((str(student_attendence[0])[16:-2]))
+            if student_attendence != []:
+                student_attendence_flag.append((str(student_attendence[0])[16:-2]))
+            else:
+                student_attendence_flag.append("No record")
+            # print(str(student_last_name[0])[15:-1])
+
+            self.editAreaTable.insert(tk.INSERT,str(student_attendence_flag[0]) + '\n')
+
+
+        pass
 
     def view_attendence_search(self):
 
@@ -3747,69 +4021,201 @@ class Gui:
         #print(str(teacher_last_name[0])[15:-2])
 
 
-
-
-        self.editAreaTable.delete("1.0", END)
-        self.editAreaTable.insert(tk.INSERT, 'Timetable id: ' + str(option_list) + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[0])[14:-1] + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n')
-        self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[10:-2] + '\n\n\n')
-
-        self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
-
-
-
-        student_id=[]
-        student_first_name=[]
+        student_id = []
+        student_first_name = []
         student_last_name = []
-        student_attendence=[]
+        student_attendence = []
         student_attendence_flag = []
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '"+ str(option_list)+"' order by student_course.student_id")
+        cur.execute(
+            "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(
+                option_list) + "' order by student_course.student_id")
 
         for row in cur.fetchall():
             student_id.append(row)
         print(str(student_id[0])[15:-1])
 
-        y=0
-        while y < len(student_id):
+
+
+        if (self.section == 2 and str(staff_id[0])[13:-1] == str(self.id)) or self.section == 1:
+            self.editAreaTable.delete("1.0", END)
+            self.editAreaTable.insert(tk.INSERT, 'Timetable id: ' + str(option_list) + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[0])[14:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2] + ' ' + str(
+                teacher_last_name[0])[15:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
+                                                                                                           10:-2] + '\n\n\n')
+
+            self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
+
+            y = 0
+            while y < len(student_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_first_name.append(row)
+                # print(str(student_first_name[0])[16:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_last_name.append(row)
+                # print(str(student_last_name[0])[15:-2])
+
+                student_attendence = []
+                cur = self.conn_fyp.cursor()
+                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[
+                                                                                         15:-1] + "' and time_table_id = '" + str(
+                    option_list) + "'")
+
+                for row in cur.fetchall():
+                    student_attendence.append(row)
+                # print((str(student_attendence[0])[16:-2]))
+                if student_attendence != []:
+                    student_attendence_flag.append((str(student_attendence[0])[16:-2]))
+                else:
+                    student_attendence_flag.append("No record")
+                # print(str(student_last_name[0])[15:-1])
+
+                y += 1
+
+            x = 0
+            while x < len(student_id):
+                self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[
+                                                                                        16:-2] + ' ' + str(
+                    student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
+                x += 1
+
+        pass
+
+    def view_attendence_all_student(self):
+        self.editAreaTable.delete("1.0", END)
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+        course_name=[]
+        staff_id = []
+        student_id = []
+        course_id=[]
+
+        teacher_first_name=[]
+        teacher_last_name = []
+        student_first_name = []
+        student_last_name=[]
+
+
+
+        day = []
+        time = []
+        room = []
+
+        time_table_id=[]
+
+        if self.section == 3:
             cur = self.conn_fyp.cursor()
-            cur.execute("select first_name from student where student_id = '" +str(student_id[y])[15:-1]+"'")
+            cur.execute("select DISTINCT time_table_id from login_record where student_id = '"+str(self.id)+"'")
+            for row in cur.fetchall():
+                time_table_id.append(row)
+            #print(str(time_table_id[0])[18:-1])
+
+            x=0
+            while x< len(time_table_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+
+                for row in cur.fetchall():
+                    course_id.append(row)
+                # print(str(course_id[0])[14:-1])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute(
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+
+                for row in cur.fetchall():
+                    course_name.append(row)
+                    # print(str(course_name[0])[17:-2])
+
+                x+=1
+
+
+
+        i=0
+        while i<len(time_table_id):
+            day = []
+            time = []
+            room = []
+
+            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+
+            print(str(time_table_id[i])[18:-1])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
 
             for row in cur.fetchall():
-                student_first_name.append(row)
-            #print(str(student_first_name[0])[16:-2])
+                day.append(row)
+            # print(str(day[0])[9:-2])
 
             cur = self.conn_fyp.cursor()
-            cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+            cur.execute(
+                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
 
             for row in cur.fetchall():
-                student_last_name.append(row)
-            #print(str(student_last_name[0])[15:-2])
+                time.append(row)
+            # print(str(time[0])[10:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+
+            for row in cur.fetchall():
+                room.append(row)
+            # print(str(room[0])[9:-2])
+
+
+
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
+                                                                                                           10:-2] + '\n')
+
+
+
+            student_id = []
+            student_first_name = []
+            student_last_name = []
+            student_attendence = []
+            student_attendence_flag = []
 
             student_attendence = []
             cur = self.conn_fyp.cursor()
-            cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[15:-1] + "' and time_table_id = '"+str(option_list)+"'")
+            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+                time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 student_attendence.append(row)
-            #print((str(student_attendence[0])[16:-2]))
+            # print((str(student_attendence[0])[16:-2]))
             if student_attendence != []:
                 student_attendence_flag.append((str(student_attendence[0])[16:-2]))
             else:
                 student_attendence_flag.append("No record")
-            #print(str(student_last_name[0])[15:-1])
-
-            y+=1
 
 
-        x=0
-        while x < len(student_id):
-            self.editAreaTable.insert(tk.INSERT,str(student_id[x])[15:-1]+"  "+str(student_first_name[x])[16:-2] + ' ' + str(student_last_name[x])[15:-2] +":      " +str(student_attendence_flag[x])+'\n')
-            x+=1
+
+            self.editAreaTable.insert(tk.INSERT,  str(student_attendence_flag[0]) + '\n\n\n')
+            i+=1
+
+
+
+
+
         pass
 
     def view_attendence_all(self):
@@ -3865,27 +4271,6 @@ class Gui:
                 x+=1
 
 
-
-
-
-        elif self.section == 3:
-
-            cur = self.conn_fyp.cursor()
-            cur.execute(
-                "select course.course_name from course inner join student_course on student_course.course_id = course.course_id where student_course.student_id = '" + str(
-                    self.id) + "' order by course.course_name")
-
-            for row in cur.fetchall():
-                course_name.append(row)
-            # print(str(course_name[0])[17:-2])
-
-            cur = self.conn_fyp.cursor()
-            cur.execute( "select course.course_id from course inner join student_course on student_course.course_id = course.course_id where student_course.student_id = '" + str(
-                    self.id) + "' order by course.course_name and course_timetable.timetable_id")
-
-            for row in cur.fetchall():
-                course_id.append(row)
-                # print(str(course_id[0])[14:-1])
 
         i=0
         while i<len(time_table_id):
@@ -4018,12 +4403,14 @@ class Gui:
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
 
-        if self.section == 2 or self.section ==3:
+        if self.section == 2 :
             self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20", command=lambda :self.view_attendence_all())
-            self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        elif self.section == 3:
+            self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
+                               command=lambda: self.view_attendence_all_student())
         else:
             self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-            self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -4117,14 +4504,21 @@ class Gui:
         tk.Button(self.frameM8, text="", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
                   height=2, command='').pack(
             side=tk.LEFT)
-        tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
-                  width=8, height=2, command=lambda: self.view_attendence_search()).pack(
-            side=tk.LEFT)
+        if self.section ==1 or self.section ==2:
+            tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
+                    width=8, height=2, command=lambda: self.view_attendence_search()).pack(
+                side=tk.LEFT)
+        elif self.section ==3:
+            tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
+                      width=8, height=2, command=lambda: self.view_attendence_search_student()).pack(
+                side=tk.LEFT)
 
         self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
 
-        if self.section ==2 or self.section ==3:
+        if self.section ==2 :
             self.view_attendence_all()
+        elif self.section ==3:
+            self.view_attendence_all_student()
 
         pass
 
@@ -4182,45 +4576,51 @@ class Gui:
             teacher_last_name.append(row)
         print(str(teacher_last_name[0])[15:-2])
 
+        section3_flag=False
+        if self.section ==3 :
+            i=0
+            while i < len(student_id)and section3_flag==False:
+                if str(student_id[i])[15:-1] == str(self.id):
+                    section3_flag = True
+                i+=1
 
 
+        if (self.section ==2 and str(staff_id[0])[13:-1] == str(self.id)) or self.section ==1 or section3_flag == True :
 
 
+            self.editAreaTable.delete("1.0", END)
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2] + ' ' + str(
+                teacher_last_name[0])[15:-2] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
+            self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
 
-        self.editAreaTable.delete("1.0", END)
-        self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
-        self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
+            y = 0
+            while y < len(student_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
 
-        y=0
-        while y < len(student_id):
-            cur = self.conn_fyp.cursor()
-            cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+                for row in cur.fetchall():
+                    student_first_name.append(row)
+                # print(str(student_first_name[0])[16:-2])
 
-            for row in cur.fetchall():
-                student_first_name.append(row)
-            #print(str(student_first_name[0])[16:-2])
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
 
-            cur = self.conn_fyp.cursor()
-            cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+                for row in cur.fetchall():
+                    student_last_name.append(row)
+                # print(str(student_last_name[0])[15:-2])
 
-            for row in cur.fetchall():
-                student_last_name.append(row)
-            #print(str(student_last_name[0])[15:-2])
+                y += 1
 
-            y+=1
+            x = 0
+            while x < len(student_id):
+                self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + ' ' + str(student_first_name[x])[
+                                                                                       16:-2] + ' ' + str(
+                    student_last_name[x])[15:-2] + '\n')
 
-
-        x = 0
-        while x < len(student_id):
-            self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1]+' '+str(student_first_name[x])[16:-2]+' '+str(student_last_name[x])[15:-2] + '\n')
-
-
-
-            x += 1
-
+                x += 1
         pass
 
     def view_course_member_all(self):
@@ -4540,7 +4940,7 @@ class Gui:
 
         self.date_label.config(
             text=str(self.user_name[0])[15:-2] + "      Staff " + self.create_input2.get() + ":Added      " + str(
-                self.date.strftime('%Y/%m/%d') + '      '))
+                self.date.strftime('%d-%m-%Y') + '      '))
 
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
@@ -4665,7 +5065,7 @@ class Gui:
 
         self.date_label.config(
             text=str(self.user_name[0])[15:-2] + "      Student " + self.create_input2.get() + ":Added      " + str(
-                self.date.strftime('%Y/%m/%d') + '      '))
+                self.date.strftime('%d-%m-%Y') + '      '))
 
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
@@ -4788,7 +5188,7 @@ class Gui:
 
         self.date_label.config(
             text=str(self.user_name[0])[15:-2] + "      Course " + self.create_input1.get() + ":Added      " + str(
-                self.date.strftime('%Y/%m/%d') + '      '))
+                self.date.strftime('%d-%m-%Y') + '      '))
 
         self.create_input1.delete(0, 'end')
         self.create_input2.delete(0, 'end')
@@ -5175,14 +5575,14 @@ class Gui:
             self.date_label.config(
                 text=str(self.user_name[0])[15:-2] + "      " + str(self.add_list) + str(first_name[0])[
                                                                                      16:-2] + ":Trainning      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
             confirm_flag = vin3_face_trainning_deep.main(str(self.add_list))
             #print(confirm_flag)
             if confirm_flag == 'Success':
                 #print('1')
                 self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Trained      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
 
                 cur_fyp = self.conn_fyp.cursor()
@@ -5198,7 +5598,7 @@ class Gui:
                 self.cur_fyp = self.db.cursor()
         else:
             self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Trained At Least Once, Trainning     " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
             confirm_flag = vin3_face_trainning_deep.main(str(self.add_list))
             # print(confirm_flag)
@@ -5207,7 +5607,7 @@ class Gui:
                 self.date_label.config(
                     text=str(self.user_name[0])[15:-2] + "      " + str(self.add_list) + str(first_name[0])[
                                                                                          16:-2] + ":Trained      " + str(
-                        self.date.strftime('%Y/%m/%d') + '      '))
+                        self.date.strftime('%d-%m-%Y') + '      '))
 
                 cur_fyp = self.conn_fyp.cursor()
                 cur_fyp.execute("update `student` set `face_train` = 'Y' where student_id = '"+str(self.add_list)+"'")
@@ -5262,7 +5662,7 @@ class Gui:
             if confirm_flag == 'Success':
                 #print('1')
                 self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Captured      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
 
                 cur_fyp = self.conn_fyp.cursor()
@@ -5278,7 +5678,7 @@ class Gui:
                 self.cur_fyp = self.db.cursor()
         else:
             self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Has Been Captured      " + str(
-                    self.date.strftime('%Y/%m/%d') + '      '))
+                    self.date.strftime('%d-%m-%Y') + '      '))
 
         self.add_list=''
         self.editAreaTable2.delete("1.0", END)
@@ -5580,7 +5980,7 @@ class Gui:
 
         self.date = datetime.datetime.now()
         self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[16:-2] + "      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
+            self.date.strftime('%d-%m-%Y') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
         self.date_label.pack(side=tk.LEFT)
 
 
@@ -5599,9 +5999,10 @@ class Gui:
         self.btnnotification = tk.Button(self.frameRt, text='Notifications', font=("Helvetica", 10, "bold "), width=20,
                                     height=1, bg="black", fg="white", command='')
         self.btnnotification.pack(side=tk.LEFT)
-        self.btnnewnoti = tk.Button(self.frameRt, text='+', font=("Helvetica", 10, "bold "), width=5,
-                                    height=1, bg="black", fg="white", command='')
-        self.btnnewnoti.pack(side=tk.LEFT)
+        if self.section == 1 or self.section == 2:
+            self.btnnewnoti = tk.Button(self.frameRt, text='+', font=("Helvetica", 10, "bold "), width=5,
+                                        height=1, bg="black", fg="white", command='')
+            self.btnnewnoti.pack(side=tk.LEFT)
 
         if self.section == 1:
             self.date_label.config(bg='dark green')
@@ -5622,7 +6023,6 @@ class Gui:
             self.clock1.configure(font=("Helvetica", 20, "bold"), bg='midnight blue', fg="white")
             self.btnrefresh.config(bg="midnight blue")
             self.btnnotification.config(bg="midnight blue")
-            self.btnnewnoti.config(bg="midnight blue")
             self.frameRt.config(background="midnight blue")
 
 

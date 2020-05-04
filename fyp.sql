@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2020 at 11:09 AM
+-- Generation Time: May 04, 2020 at 06:56 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -68,7 +68,8 @@ INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `day`, `time`, `ro
 (1, 1, '28-4-2020', '11:30', '1034'),
 (2, 2, '28-4-2020', '13:00', '103'),
 (3, 2, '12-3-2020', '11:30', '123'),
-(4, 2, '4-5-2020', '12:00', '101');
+(4, 2, '5-5-2020', '12:00', '101'),
+(5, 2, '3-1-2021', '08:30', '197');
 
 -- --------------------------------------------------------
 
@@ -105,7 +106,8 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 (101, '2020-04-30 21:11:54.885344', 64, 1),
 (101, '2020-04-30 21:37:45.389520', 65, 1),
 (101, '2020-04-30 21:49:38.921620', 66, 2),
-(102, '2020-05-03 00:11:07.685656', 67, 2);
+(102, '2020-05-03 00:11:07.685656', 67, 2),
+(103, '2020-05-05 00:24:06.783712', 68, 4);
 
 -- --------------------------------------------------------
 
@@ -128,7 +130,7 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staff_id`, `password`, `first_name`, `last_name`, `position`, `sex`, `date_of_birth`) VALUES
-(123, '123', 'Vin2', 'Vin2', 'Admin', 'M', '23-11-1999'),
+(123, '123', 'Vin2', 'Li', 'Admin', 'M', '23-11-1999'),
 (124, '123', 'PandaEric', 'Poon', 'Teacher', 'M', '23-2-1999'),
 (125, '246', 'Pak', 'Wong', 'Teacher', 'M', '23-1-1990'),
 (126, '123', 'm.mky', 'Ma', 'Officer', 'F', '1-4-1999');
@@ -230,13 +232,13 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `login_record`
 --
 ALTER TABLE `login_record`
-  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `staff`
