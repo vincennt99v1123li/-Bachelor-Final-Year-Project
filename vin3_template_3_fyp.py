@@ -11,7 +11,8 @@ import datetime
 import time
 from tkinter import END
 # import cx_Oracle
-import login_loop_302
+import vin3_Login_loop
+import vin3_Login_student_loop
 import clock
 import json
 import pymysql
@@ -411,7 +412,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
         '''
         self.editAreaTable.insert(tk.INSERT,
@@ -453,11 +454,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -785,11 +786,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -1101,11 +1102,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -1442,7 +1443,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
         '''
         self.editAreaTable.insert(tk.INSERT,
@@ -1484,11 +1485,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -1764,11 +1765,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -1838,6 +1839,95 @@ class Gui:
         pass
         pass
 
+
+
+    def course_list_my(self):
+        self.editAreaTable.delete("1.0", END)
+        first_name = []
+        last_name = []
+        course_id = []
+        course_name = []
+        staff_id=[]
+
+
+        if self.section ==2:
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course_id from course  where staff_id = '"+str(self.id)+"' order by course_name")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+            #print(str(course_id[0])[14:-1])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course_name from course  where staff_id = '"+str(self.id)+"' order by course_name")
+
+            for row in cur.fetchall():
+                course_name.append(row)
+            #print(str(course_name[0])[17:-2])
+
+        else:
+            cur = self.conn_fyp.cursor()
+            cur.execute("select student_course.course_id from student_course inner join course on  student_course.course_id =  course.course_id  where student_course.student_id = '" + str(self.id) + "' order by course.course_name")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+            # print(str(course_id[0])[14:-1])
+
+            i=0
+            while i<len(course_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select course_name from course  where course_id = '" + str(course_id[i])[14:-1] + "'")
+
+                for row in cur.fetchall():
+                    course_name.append(row)
+                    # print(str(course_name[0])[17:-2])
+
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select staff_id  from course where course_id = '" + str(course_id[i])[14:-1]+"'")
+
+                for row in cur.fetchall():
+                    staff_id.append(row)
+                #print(str(staff_id[0])[13:-1])
+                i += 1
+            y=0
+            while y<len(staff_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name  from staff where staff_id = '"+str(staff_id[y])[13:-1]+"'")
+
+                for row in cur.fetchall():
+                    first_name.append(row)
+                    #print(str(first_name[0])[16:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name  from staff where staff_id = '" + str(staff_id[y])[13:-1] + "'")
+
+                for row in cur.fetchall():
+                    last_name.append(row)
+                # print(str(last_name[0])[15:-2])
+
+                y+=1
+
+
+
+        x = 0
+        while x < len(course_id):
+            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' +str(course_id[x])[14:-1]+ '\n')
+            self.editAreaTable.insert(tk.INSERT,
+                                      'Course Name: ' + str(course_name[x])[17:-2] + '\n')
+            if self.section ==3:
+                self.editAreaTable.insert(tk.INSERT, 'Staff ID: ' + str(staff_id[x])[13:-1] + '\n')
+                self.editAreaTable.insert(tk.INSERT, 'Teacher Name: ' + str(first_name[x])[16:-2]+" "+str(last_name[x])[15:-2] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Position: ' + str(position[x])[14:-2] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Face trainning: ' + str(face_train[x])[16:-2] + '\n')
+
+            self.editAreaTable.insert(tk.INSERT, '\n')
+            self.editAreaTable.insert(tk.INSERT, '\n')
+            self.editAreaTable.insert(tk.INSERT, '\n')
+
+            x += 1
+
+        pass
 
     def course_list_all(self):
         self.editAreaTable.delete("1.0", END)
@@ -1928,7 +2018,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
         '''
         self.editAreaTable.insert(tk.INSERT,
@@ -1937,9 +2027,13 @@ class Gui:
                                   "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
         '''
 
-        self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20",
-                           command='')
-        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        if self.section ==2:
+            self.btnTR1.config(text='My Course', font=("Helvetica", 20, "bold "), bg="grey20",
+                               command=lambda:self.course_list_my())
+            self.btnTR2.config(text='List All', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda:self.course_list_all())
+        else:
+            self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20",command='')
+            self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -1947,14 +2041,13 @@ class Gui:
         self.btnTR7.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR8.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
 
-        self.btnBack.config(command=lambda: self.home_page("add_order"))
-        self.btnHome.config(command=lambda: self.home_page("add_order"))
+        self.btnBack.config(command=lambda: self.home_page("_order"))
+        self.btnHome.config(command=lambda: self.home_page("_order"))
 
-
-
-
-
-        self.course_list_all()
+        if self.section == 2 or self.section == 3:
+            self.course_list_my()
+        else:
+            self.course_list_all()
 
 
         pass
@@ -2211,11 +2304,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -2539,11 +2632,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -2825,11 +2918,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -3151,11 +3244,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -3348,7 +3441,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
         self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -3383,11 +3476,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -3627,7 +3720,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
         self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -3662,11 +3755,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -3757,17 +3850,17 @@ class Gui:
 
         for row in cur.fetchall():
             course_name.append(row)
-        print(str(course_name[0])[17:-2])
+        #print(str(course_name[0])[17:-2])
 
         cur = self.conn_fyp.cursor()
         cur.execute("select staff_id from course where course_id = '"+str(option_list)+"'")
 
         for row in cur.fetchall():
             staff_id.append(row)
-        print(str(staff_id[0])[13:-1])
+        #print(str(staff_id[0])[13:-1])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select student_id from student_course where course_id = '"+str(option_list)+"'")
+        cur.execute("select student_course.student_id from student_course inner join student on student_course.student_id = student.student_id where student_course.course_id = '"+str(option_list)+"'  order by student.last_name")
 
         for row in cur.fetchall():
             student_id.append(row)
@@ -3830,6 +3923,171 @@ class Gui:
 
         pass
 
+    def view_course_member_all(self):
+        self.editAreaTable.delete("1.0", END)
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+        course_name=[]
+        staff_id = []
+        student_id = []
+        course_id=[]
+
+        teacher_first_name=[]
+        teacher_last_name = []
+        student_first_name = []
+        student_last_name=[]
+
+
+        if self.section == 2:
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course_name from course where staff_id = '"+str(self.id)+"' order by course_id")
+
+            for row in cur.fetchall():
+                course_name.append(row)
+            #print(str(course_name[0])[17:-2])
+
+
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course_id from course where staff_id = '"+str(self.id)+"' order by course_id")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+            #print(str(course_id[0])[14:-1])
+
+        elif self.section == 3:
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select course_id from student_course where student_id = '" + str(self.id) + "' order by course_id")
+
+            for row in cur.fetchall():
+                course_id.append(row)
+            #print(str(course_id[0])[14:-1])
+
+            x=0
+            while x<len(course_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select course_name from course where course_id = '" + str(course_id[x])[14:-1] + "'")
+
+                for row in cur.fetchall():
+                    course_name.append(row)
+                #print(str(course_name[0])[17:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select staff_id from course where course_id = '" + str(course_id[x])[14:-1] + "'")
+
+                for row in cur.fetchall():
+                    staff_id.append(row)
+                    #print(str(staff_id[0])[13:-1])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name from staff where staff_id = '" + str(staff_id[x])[13:-1] + "'")
+
+                for row in cur.fetchall():
+                    teacher_first_name.append(row)
+                #print(str(teacher_first_name[0])[16:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name from staff where staff_id = '" + str(staff_id[x])[13:-1] + "'")
+
+                for row in cur.fetchall():
+                    teacher_last_name.append(row)
+                #print(str(teacher_last_name[0])[15:-2])
+
+
+                x+=1
+
+
+        i=0
+        while i<len(course_id):
+            #print(i)
+
+            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1] + '\n')
+
+
+            if self.section==2:
+                self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n\n')
+            elif self.section==3:
+                self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+                self.editAreaTable.insert(tk.INSERT, 'Staff ID: ' + str(staff_id[i])[13:-1]+ '\n')
+                self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[i])[16:-2]+" "+str(teacher_last_name[i])[15:-2] + '\n')
+
+            self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
+            cur = self.conn_fyp.cursor()
+            student_id=[]
+            cur.execute("select student_course.student_id from student_course inner join student on student_course.student_id = student.student_id where student_course.course_id = '"+str(course_id[i])[14:-1]+"'  order by student.last_name")
+
+            for row in cur.fetchall():
+                student_id.append(row)
+            #print(str(student_id[0])[15:-1])
+
+            y=0
+            while y<len(student_id):
+                student_first_name=[]
+                student_last_name=[]
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_first_name.append(row)
+                # print(str(student_first_name[0])[16:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_last_name.append(row)
+                # print(str(student_last_name[0])[15:-2])
+
+                self.editAreaTable.insert(tk.INSERT, str(student_id[y])[15:-1] + ' ' + str(student_first_name[0])[
+                                                                                       16:-2] + ' ' + str(
+                    student_last_name[0])[15:-2] + '\n')
+
+                y += 1
+            self.editAreaTable.insert(tk.INSERT,  '\n\n\n')
+
+            i+=1
+
+        '''
+
+        self.editAreaTable.delete("1.0", END)
+        self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
+        self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
+        self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
+        self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
+        self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
+
+        y=0
+        while y < len(student_id):
+            cur = self.conn_fyp.cursor()
+            cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+            for row in cur.fetchall():
+                student_first_name.append(row)
+            #print(str(student_first_name[0])[16:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+            for row in cur.fetchall():
+                student_last_name.append(row)
+            #print(str(student_last_name[0])[15:-2])
+
+            y+=1
+
+
+        x = 0
+        while x < len(student_id):
+            self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1]+' '+str(student_first_name[x])[16:-2]+' '+str(student_last_name[x])[15:-2] + '\n')
+
+
+
+            x += 1
+        '''
+        pass
+
     def view_course_member(self):
         self.del_list = ''
 
@@ -3854,7 +4112,7 @@ class Gui:
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
         self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -3889,11 +4147,11 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM1, height=10, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable3 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable3.pack(fill="both", expand="yes", side="left")
 
         tk.Button(self.frameM5, text="7", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
@@ -3958,7 +4216,8 @@ class Gui:
 
         self.editAreaTable2.insert(tk.INSERT, 'Input Course id to Search: ')
 
-
+        if self.section==2 or self.section==3:
+            self.view_course_member_all()
 
         pass
 
@@ -4485,13 +4744,13 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable = tkst.ScrolledText(self.frameM1, height=8, width=40, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable.insert(tk.INSERT, "")
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable.insert(tk.INSERT, 'Input_student_id: ')
@@ -4725,6 +4984,12 @@ class Gui:
 
 
 
+    def logout(self):
+        if self.section==1 or self.section==2:
+            vin3_Login_loop.main(self.root)
+        elif self.section==3:
+            vin3_Login_student_loop.main(self.root)
+
     def main_page(self, section, order_id, table_id):
 
         self.add_list = ''
@@ -4810,13 +5075,10 @@ class Gui:
         self.frameTablelabel = tk.Frame(self.left_frame)
         self.frameTablelabel.pack()
 
-        if section == 1:
-            tk.Label(self.frameL1, bg='black', text='Reco+ (Staff)',
-                     font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
-        elif section == 2:
-            tk.Label(self.frameL1, bg='black', text='Switch table',
-                     font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
+        tk.Label(self.frameL1, bg='black', text='Reco+',font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
+
+
 
         self.btn_tb = [[0 for x in range(100)] for y in range(1)]
         for i in range(0, 5):
@@ -4875,33 +5137,59 @@ class Gui:
 
 
         #Admin/Officer
-        self.btn_tb[0][0].config(text="Face Capture", command=lambda: self.add_reco_template('cap'))
-        self.btn_tb[0][1].config(text="Face Trainning", command=lambda: self.add_reco_template('train'))
+        if self.section == 1:
+            self.btn_tb[0][0].config(text="Face Capture", command=lambda: self.add_reco_template('cap'))
+            self.btn_tb[0][1].config(text="Face Trainning", command=lambda: self.add_reco_template('train'))
 
-        self.btn_tb[0][5].config(text="Staff List", command=lambda: self.staff_list())
-        self.btn_tb[0][6].config(text="New Staff", command=lambda: self.add_staff())
-        self.btn_tb[0][7].config(text="Staff Modify", command=lambda: self.staff_modify())
+            self.btn_tb[0][5].config(text="Staff List", command=lambda: self.staff_list())
+            self.btn_tb[0][6].config(text="New Staff", command=lambda: self.add_staff())
+            self.btn_tb[0][7].config(text="Staff Modify", command=lambda: self.staff_modify())
 
-        self.btn_tb[0][10].config(text="Student List", command=lambda: self.student_list())
-        self.btn_tb[0][11].config(text="New Student", command=lambda: self.add_student())
-        self.btn_tb[0][12].config(text="Student Modify", command=lambda: self.student_modify())
+            self.btn_tb[0][10].config(text="Student List", command=lambda: self.student_list())
+            self.btn_tb[0][11].config(text="New Student", command=lambda: self.add_student())
+            self.btn_tb[0][12].config(text="Student Modify", command=lambda: self.student_modify())
 
-        self.btn_tb[0][15].config(text="Course List", command=lambda: self.course_list())
-        self.btn_tb[0][16].config(text="New Course", command=lambda: self.add_course())
-        self.btn_tb[0][17].config(text="Modify Course", command=lambda: self.course_modify())
+            self.btn_tb[0][15].config(text="Course List", command=lambda: self.course_list())
+            self.btn_tb[0][16].config(text="New Course", command=lambda: self.add_course())
+            self.btn_tb[0][17].config(text="Modify Course", command=lambda: self.course_modify())
 
-        self.btn_tb[0][20].config(text="View\n Course Member", command=lambda: self.view_course_member())
-        self.btn_tb[0][21].config(text="Add Student\n to Course", command=lambda: self.add_student_course())
-        self.btn_tb[0][22].config(text="Delete Student\n from Course", command=lambda: self.del_student_course())
+            self.btn_tb[0][20].config(text="View\n Course Member", command=lambda: self.view_course_member())
+            self.btn_tb[0][21].config(text="Add Student\n to Course", command=lambda: self.add_student_course())
+            self.btn_tb[0][22].config(text="Delete Student\n from Course", command=lambda: self.del_student_course())
 
-        self.btn_tb[0][25].config(text="View Timetable", command=lambda: self.view_timetable())
-        self.btn_tb[0][26].config(text="Add Timetable", command=lambda: self.add_timetable())
-        self.btn_tb[0][27].config(text="Modify Timetable", command=lambda: self.modify_timetable())
+            self.btn_tb[0][25].config(text="View Timetable", command=lambda: self.view_timetable())
+            self.btn_tb[0][26].config(text="Add Timetable", command=lambda: self.add_timetable())
+            self.btn_tb[0][27].config(text="Modify Timetable", command=lambda: self.modify_timetable())
 
-        self.btn_tb[0][30].config(text="View Attendence", command=lambda: self.view_attendence())
+            self.btn_tb[0][30].config(text="View Attendence", command=lambda: self.view_attendence())
 
 
         #Teacher
+        elif self.section == 2:
+
+            self.btn_tb[0][0].config(text="Staff List", command=lambda: self.staff_list())
+
+            self.btn_tb[0][1].config(text="Student List", command=lambda: self.student_list())
+
+            self.btn_tb[0][2].config(text="Course List", command=lambda: self.course_list())
+
+            self.btn_tb[0][3].config(text="View\n Course Member", command=lambda: self.view_course_member())
+
+            self.btn_tb[0][4].config(text="View Timetable", command=lambda: self.view_timetable())
+
+            self.btn_tb[0][5].config(text="View Attendence", command=lambda: self.view_attendence())
+
+        elif self.section == 3:
+
+            self.btn_tb[0][0].config(text="Course List", command=lambda: self.course_list())
+
+            self.btn_tb[0][1].config(text="View\n Course Member", command=lambda: self.view_course_member())
+
+            self.btn_tb[0][2].config(text="View Timetable", command=lambda: self.view_timetable())
+
+            self.btn_tb[0][3].config(text="View Attendence", command=lambda: self.view_attendence())
+
+
 
         self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20",
                            command='')
@@ -4912,7 +5200,7 @@ class Gui:
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR6.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR7.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-        self.btnTR8.config(text='LogOut', bg='red4', command=lambda: self.logout())
+        self.btnTR8.config(text='LogOut', bg='grey20', command=lambda: self.logout())
 
 
 
@@ -4933,10 +5221,10 @@ class Gui:
 
 
 
-    def __init__(self, root, id):
+    def __init__(self, root, id,login_method):
         self.root = root
         self.root.geometry('1920x1080')
-        self.root.title("Reco+ (Staff)")
+        self.root.title("Reco+")
 
 
 
@@ -4947,49 +5235,92 @@ class Gui:
                                     cursorclass=pymysql.cursors.DictCursor)
         self.cur_fyp = self.db_fyp.cursor()
 
-        self.frameRt = tk.Frame(self.root, background="dark green")
+        self.frameRt = tk.Frame(self.root, background="black")
         self.frameRt.pack(fill="both")
 
         self.id = str(id)
         print(self.id)
         self.user_name = []
-
-        cur_fyp = self.conn_fyp.cursor()
-        cur_fyp.execute("select last_name from staff where staff_id = '" + str(self.id) + "'")
-        for row in cur_fyp.fetchall():
-            self.user_name.append(row)
-
         self.position = []
 
-        cur_fyp = self.conn_fyp.cursor()
-        cur_fyp.execute("select position from staff where staff_id = '" + str(self.id) + "'")
-        for row in cur_fyp.fetchall():
-            self.position.append(row)
+        if login_method=="Staff":
+            cur_fyp = self.conn_fyp.cursor()
+            cur_fyp.execute("select first_name from staff where staff_id = '" + str(self.id) + "'")
+            for row in cur_fyp.fetchall():
+                self.user_name.append(row)
 
+
+
+            cur_fyp = self.conn_fyp.cursor()
+            cur_fyp.execute("select position from staff where staff_id = '" + str(self.id) + "'")
+            for row in cur_fyp.fetchall():
+                self.position.append(row)
+
+            if str(self.position[0])[14:-2] == "Admin" or str(self.position[0])[14:-2] == "Officer" or str(
+                    self.position[0])[14:-2] == "admin" or str(self.position[0])[14:-2] == "officer":
+                self.section = 1
+            else:
+                self.section = 2
+        elif login_method=="Student":
+            cur_fyp = self.conn_fyp.cursor()
+            cur_fyp.execute("select first_name from student where student_id = '" + str(self.id) + "'")
+            for row in cur_fyp.fetchall():
+                self.user_name.append(row)
+
+            self.section = 3
         #print(str(self.position[0])[14:-2])
-        self.section=1
-        if str(self.position[0])[14:-2] == "Admin" or str(self.position[0])[14:-2] == "Officer" or str(self.position[0])[14:-2] == "admin" or str(self.position[0])[14:-2] == "officer":
-            self.section = 1
-        else:
-            self.section = 2
+
+
 
 
 
         self.date = datetime.datetime.now()
-        self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[15:-2] + "      " + str(
-            self.date.strftime('%Y/%m/%d') + '      '), font=("courier new", 20, "bold"), bg='dark green', fg="white")
+        self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[16:-2] + "      " + str(
+            self.date.strftime('%Y/%m/%d') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
         self.date_label.pack(side=tk.LEFT)
+
+
+
 
         self.clock1 = clock.Clock(self.frameRt)
         self.clock1.pack(side=tk.LEFT)
-        self.clock1.configure(font=("courier new", 20, "bold"), bg='dark green', fg="white")
+        #self.clock1.configure(font=("Helvetica", 20, "bold"), bg='dark green', fg="white")
 
         #self.btnbag = tk.Button(self.frameRt, text='Bag: 0', font=("Helvetica", 10, "bold "), width=20,height=1, bg="black", fg="white", command=lambda: self.bag("1"))
         #self.btnbag.pack(side=tk.LEFT)
 
-        self.btnrefresh = tk.Button(self.frameRt, text='REFRESH', font=("Helvetica", 10, "bold "), width=20,
-                                    height=1, bg="Dark green", fg="white", command=lambda: self.bag("1"))
+        self.btnrefresh = tk.Button(self.frameRt, text='⟳', font=("Helvetica", 10, "bold "), width=5,
+                                    height=1, bg="black", fg="white", command='')
         self.btnrefresh.pack(side=tk.LEFT)
+        self.btnnotification = tk.Button(self.frameRt, text='Notifications', font=("Helvetica", 10, "bold "), width=20,
+                                    height=1, bg="black", fg="white", command='')
+        self.btnnotification.pack(side=tk.LEFT)
+        self.btnnewnoti = tk.Button(self.frameRt, text='+', font=("Helvetica", 10, "bold "), width=5,
+                                    height=1, bg="black", fg="white", command='')
+        self.btnnewnoti.pack(side=tk.LEFT)
+
+        if self.section == 1:
+            self.date_label.config(bg='dark green')
+            self.clock1.configure(font=("Helvetica", 20, "bold"), bg='dark green', fg="white")
+            self.btnrefresh.config(bg="dark green")
+            self.btnnotification.config(bg="dark green")
+            self.btnnewnoti.config(bg="dark green")
+            self.frameRt.config(background="dark green")
+        elif self.section == 2:
+            self.date_label.config(bg='dark red')
+            self.clock1.configure(font=("Helvetica", 20, "bold"), bg='dark red', fg="white")
+            self.btnrefresh.config(bg="dark red")
+            self.btnnotification.config(bg="dark red")
+            self.btnnewnoti.config(bg="dark red")
+            self.frameRt.config(background="dark red")
+        elif self.section == 3:
+            self.date_label.config(bg='midnight blue')
+            self.clock1.configure(font=("Helvetica", 20, "bold"), bg='midnight blue', fg="white")
+            self.btnrefresh.config(bg="midnight blue")
+            self.btnnotification.config(bg="midnight blue")
+            self.btnnewnoti.config(bg="midnight blue")
+            self.frameRt.config(background="midnight blue")
+
 
         self.bottom_nvaigation = Frame(self.root, background="black", borderwidth=5,
                                        relief="ridge", height=35)
@@ -5101,10 +5432,10 @@ class Gui:
         self.main_page(self.section, [], '')
 
 
-def main(id, window):
+def main(id,login_method, window):
     root = tk.Tk()
     window.destroy()
-    Gui(root, id)
+    Gui(root, id,login_method)
 
     root.mainloop()
 

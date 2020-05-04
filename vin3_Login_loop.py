@@ -9,7 +9,7 @@ from tkinter import Button, Frame, Tk
 from tkinter import END
 import cx_Oracle
 import pymysql
-import vin3_template_3_fyp_att
+import vin3_template_3_fyp
 
 class Gui:
     def login_page_editarea(self, choice):
@@ -33,27 +33,6 @@ class Gui:
         self.login_list = ''
         self.btn_ap_enter.config(command=lambda: self.username_receive())
 
-
-    def course_receive(self):
-        self.input_list.append(self.login_list)
-        self.login_list = ''
-        self.editAreaAddress.delete("1.0", END)
-        self.editAreaAddress2.delete("1.0", END)
-
-
-
-        id_flag=[]
-        cur = self.conn.cursor()
-        cur.execute("SELECT time_table_id FROM course_timetable WHERE time_table_id = '"+str(self.input_list[0])+"'")
-        for row in cur.fetchall():
-            id_flag.append(row)
-            print(str(id_flag[0]))
-            print(str(id_flag[0])[18:-1])
-        if str(id_flag[0])[18:-1] != '':
-            vin3_template_3_fyp_att.main((str(id_flag[0])[18:-1]),self.root)
-        else:
-            pass
-
     def password_receive(self):
         self.input_list.append(self.login_list)
         self.login_list = ''
@@ -69,20 +48,14 @@ class Gui:
             print(str(pw[0])[14:-2])
         try:
             if str(pw[0])[14:-2] == str(self.input_list[1]):
-                #shop_id = []
-                #cur = self.conn.cursor()
-                #cur.execute("select staff_id from staff where username = '" + str(self.input_list[0]) + "'")
-                #for row in cur.fetchall():
-                    #shop_id.append(row)
-                    #print(shop_id)
-                    #print("test"+str(shop_id[0])[13:-1])
-                #self.shop_id.append(str(shop_id[0])[13:-1])
-                #vin3_template_3_fyp_att.main((str(shop_id[0])[13:-1]),self.root)
-                self.input_list=[]
-                self.editAreaAddress.insert(tk.INSERT, 'Input time_table_id:')
-                self.editAreaAddress2.delete("1.0", END)
-                self.btn_ap_enter.config(command=lambda: self.course_receive())
-
+                shop_id = []
+                cur = self.conn.cursor()
+                cur.execute("select staff_id from staff where staff_id = '" + str(self.input_list[0]) + "'")
+                for row in cur.fetchall():
+                    shop_id.append(row)
+                    print(shop_id)
+                    print("test"+str(shop_id[0])[13:-1])
+                vin3_template_3_fyp.main((str(shop_id[0])[13:-1]),"Staff",self.root)
             else:
                 self.wrong_()
         except IndexError as error:
@@ -151,11 +124,11 @@ class Gui:
         self.btn_ap_enter.pack(side=tk.LEFT)
 
 
+
     def __init__(self, root):
-        self.shop_id=[]
         self.root = root
         self.root.geometry('1920x1080')
-        self.root.title("Reco+")
+        self.root.title("Reco+ (Staff)")
 
         self.left_frame = Frame(self.root, background="black",
                                 borderwidth=5, relief="ridge",
@@ -195,7 +168,7 @@ class Gui:
         self.name_label3.pack()
         self.name_label4 = tk.Label(self.frameL4, text="Reco+", font=("Helvetica", 50, "bold italic"), fg="white",background="black")
         self.name_label4.pack()
-        self.name_label5 = tk.Label(self.frameL5, text="Attendence Taking Terminal",font=("Helvetica", 30, "bold italic"), fg="white",background="black")
+        self.name_label5 = tk.Label(self.frameL5, text="Staff", font=("Helvetica", 30, "bold italic"), fg="white",background="black")
         self.name_label5.pack()
         self.name_label6 = tk.Label(self.frameL6, text="", background="black")
         self.name_label6.pack()
@@ -219,9 +192,10 @@ class Gui:
         self.cur = self.db.cursor()
 
 
-def main():
+def main(window):
     root = tk.Tk()
     Gui(root)
+    window.destroy()
     root.mainloop()
 
 

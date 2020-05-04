@@ -223,13 +223,13 @@ class Gui:
         self.frameM9.pack()
 
         self.editAreaTable = tkst.ScrolledText(self.frameM1, height=8, width=40, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable.insert(tk.INSERT, "")
 
         self.editAreaTable2 = tkst.ScrolledText(self.frameM2, height=2, width=40, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable2.pack(fill="both", expand="yes", side="left")
 
         self.editAreaTable.insert(tk.INSERT, 'Input_student_id: ')
@@ -531,12 +531,12 @@ class Gui:
         #print(str(self.user_name[0]))
         self.date = datetime.datetime.now()
         self.date_label = tk.Label(self.frameRt, text=str(self.user_name[0])[1:-1] + "      Timetable ID: " +str(self.id)+" "+ str(
-            self.date.strftime('%Y/%m/%d') + '      '), font=("courier new", 20, "bold"), bg='black', fg="white")
+            self.date.strftime('%Y/%m/%d') + '      '), font=("Helvetica", 20, "bold"), bg='black', fg="white")
         self.date_label.pack(side=tk.LEFT)
 
         self.clock1 = clock.Clock(self.frameRt)
         self.clock1.pack(side=tk.LEFT)
-        self.clock1.configure(font=("courier new", 20, "bold"), bg='black', fg="white")
+        self.clock1.configure(font=("Helvetica", 20, "bold"), bg='black', fg="white")
 
         self.btnbag = tk.Button(self.frameRt, text='Log Out', font=("Helvetica", 10, "bold "), width=20,
                                 height=1, bg="black", fg="white", command=lambda: self.bag("1"))

@@ -55,7 +55,7 @@ class Gui:
                     shop_id.append(row)
                     print(shop_id)
                     print("test"+str(shop_id[0])[13:-1])
-                vin3_template_3_fyp.main((str(shop_id[0])[13:-1]),self.root)
+                vin3_template_3_fyp.main((str(shop_id[0])[13:-1]),"Staff",self.root)
             else:
                 self.wrong_()
         except IndexError as error:
@@ -80,12 +80,12 @@ class Gui:
         self.name_label5.destroy()
         self.name_label6.destroy()
         self.editAreaAddress = tkst.ScrolledText(self.frameL1, height=7, background="black", fg="white",
-                                               font=("courier new", 15, "bold"))
+                                               font=("Helvetica", 15, "bold"))
         self.editAreaAddress.pack(fill="both", expand="yes", side="left")
         self.editAreaAddress.insert(tk.INSERT, 'Input your username:')
 
         self.editAreaAddress2 = tkst.ScrolledText(self.frameL2, height=5, background="black", fg="white",
-                                                font=("courier new", 15, "bold"))
+                                                font=("Helvetica", 15, "bold"))
         self.editAreaAddress2.pack(fill="both", expand="yes", side="left")
 
         keyboardlist=['1','2','3','4','5','6','7','8','9','0','Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L',"'",'Z','X','C','V','B','N','M',',','/']
