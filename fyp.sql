@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2020 at 06:24 PM
+-- Generation Time: May 04, 2020 at 11:09 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -43,7 +43,8 @@ INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
 (3, 'A (Tut)(G2)', 125),
 (4, 'D', 124),
 (5, 'E', 125),
-(6, 'F', 125);
+(6, 'F', 125),
+(7, 'G', 125);
 
 -- --------------------------------------------------------
 
@@ -128,8 +129,9 @@ CREATE TABLE `staff` (
 
 INSERT INTO `staff` (`staff_id`, `password`, `first_name`, `last_name`, `position`, `sex`, `date_of_birth`) VALUES
 (123, '123', 'Vin2', 'Vin2', 'Admin', 'M', '23-11-1999'),
-(124, '123', 'Eric', 'Panda', 'Teacher', 'M', '23-2-1999'),
-(125, '246', 'hello3', 'Chan1', 'Teacher', 'M', '23-1-1990');
+(124, '123', 'PandaEric', 'Poon', 'Teacher', 'M', '23-2-1999'),
+(125, '246', 'Pak', 'Wong', 'Teacher', 'M', '23-1-1990'),
+(126, '123', 'm.mky', 'Ma', 'Officer', 'F', '1-4-1999');
 
 -- --------------------------------------------------------
 
@@ -144,18 +146,19 @@ CREATE TABLE `student` (
   `date_of_birth` char(10) NOT NULL,
   `student_id` int(100) NOT NULL,
   `face_cap` char(1) NOT NULL,
-  `face_train` char(1) NOT NULL
+  `face_train` char(1) NOT NULL,
+  `password` char(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`first_name`, `last_name`, `sex`, `date_of_birth`, `student_id`, `face_cap`, `face_train`) VALUES
-('Vincent', 'Li', 'M', '23-11-1999', 101, 'Y', 'Y'),
-('Ada', 'Chan', 'F', '28-10-1998', 102, 'Y', 'Y'),
-('hello3', 'Li', 'M', '23-11-1999', 103, 'Y', 'Y'),
-('yo', 'wong', 'F', '11-4-2000', 104, 'Y', 'N');
+INSERT INTO `student` (`first_name`, `last_name`, `sex`, `date_of_birth`, `student_id`, `face_cap`, `face_train`, `password`) VALUES
+('Vincent', 'Li', 'M', '23-11-1999', 101, 'Y', 'Y', '123'),
+('Ada', 'Chan', 'F', '28-10-1998', 102, 'Y', 'Y', '123'),
+('hello3', 'Li', 'M', '23-11-1999', 103, 'Y', 'Y', '123'),
+('yo', 'wong', 'F', '11-4-2000', 104, 'Y', 'N', '123');
 
 -- --------------------------------------------------------
 
@@ -221,7 +224,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `course_timetable`
@@ -239,7 +242,7 @@ ALTER TABLE `login_record`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `student`
