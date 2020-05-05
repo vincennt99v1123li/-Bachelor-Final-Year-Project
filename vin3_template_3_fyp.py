@@ -23,6 +23,9 @@ import vin3_face_recognition_test2
 import vin3_cap_face
 import vin3_face_trainning_deep
 
+import os.path
+from os import path
+
 class Gui:
     def last_page(self, page):
 
@@ -4375,6 +4378,325 @@ class Gui:
 
         pass
 
+
+
+    def view_attendence_search_course_student(self):
+        self.editAreaTable.delete("1.0", END)
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+        course_name=[]
+        staff_id = []
+        student_id = []
+        course_id=[]
+
+        teacher_first_name=[]
+        teacher_last_name = []
+        student_first_name = []
+        student_last_name=[]
+
+
+
+        day = []
+        time = []
+        room = []
+
+        time_table_id=[]
+
+        if self.section == 3:
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "SELECT course_timetable.time_table_id from course_timetable inner join student_course on student_course.course_id = course_timetable.course_id where student_course.course_id = '"+str(option_list)+"' and student_course.student_id ='"+str(self.id)+"'")
+            for row in cur.fetchall():
+                time_table_id.append(row)
+            print(str(time_table_id[0])[18:-1])
+
+
+
+
+            x=0
+            while x< len(time_table_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+
+                for row in cur.fetchall():
+                    course_id.append(row)
+                # print(str(course_id[0])[14:-1])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute(
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+
+                for row in cur.fetchall():
+                    course_name.append(row)
+                    # print(str(course_name[0])[17:-2])
+
+                x+=1
+
+
+
+        i=0
+        while i<len(time_table_id):
+            day = []
+            time = []
+            room = []
+
+            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+
+            print(str(time_table_id[i])[18:-1])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+
+            for row in cur.fetchall():
+                day.append(row)
+            # print(str(day[0])[9:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+
+            for row in cur.fetchall():
+                time.append(row)
+            # print(str(time[0])[10:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+
+            for row in cur.fetchall():
+                room.append(row)
+            # print(str(room[0])[9:-2])
+
+
+
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
+                                                                                                           10:-2] + '\n')
+
+
+
+            student_id = []
+            student_first_name = []
+            student_last_name = []
+            student_attendence = []
+            student_attendence_flag = []
+
+            student_attendence = []
+            cur = self.conn_fyp.cursor()
+            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+                time_table_id[i])[18:-1] + "'")
+
+            for row in cur.fetchall():
+                student_attendence.append(row)
+            # print((str(student_attendence[0])[16:-2]))
+            if student_attendence != []:
+                student_attendence_flag.append((str(student_attendence[0])[16:-2]))
+            else:
+                student_attendence_flag.append("No record")
+                # print(str(student_last_name[0])[15:-1])
+
+            self.editAreaTable.insert(tk.INSERT, str(student_attendence_flag[0]) + '\n\n')
+
+
+         
+            i+=1
+
+
+
+
+
+        pass
+
+
+    def view_attendence_search_course(self):
+        self.editAreaTable.delete("1.0", END)
+        option_list = self.del_list
+        self.del_list = ''
+        self.editAreaTable3.delete("1.0", END)
+
+        course_name=[]
+        staff_id = []
+        student_id = []
+        course_id=[]
+
+        teacher_first_name=[]
+        teacher_last_name = []
+        student_first_name = []
+        student_last_name=[]
+
+
+
+        day = []
+        time = []
+        room = []
+
+        time_table_id=[]
+
+        if self.section == 1:
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "SELECT course_timetable.time_table_id from course_timetable inner join course on course.course_id = course_timetable.course_id where course.course_id = '"+str(option_list)+"'")
+            for row in cur.fetchall():
+                time_table_id.append(row)
+            print(str(time_table_id[0])[18:-1])
+        elif self.section == 2:
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "SELECT course_timetable.time_table_id from course_timetable inner join course on course.course_id = course_timetable.course_id where course.course_id = '" + str(
+                    option_list) + "' and course.staff_id ='"+str(self.id)+"'")
+            for row in cur.fetchall():
+                time_table_id.append(row)
+            print(str(time_table_id[0])[18:-1])
+
+
+
+        if self.section == 1 or self.section == 2:
+            x=0
+            while x< len(time_table_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+
+                for row in cur.fetchall():
+                    course_id.append(row)
+                # print(str(course_id[0])[14:-1])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute(
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+
+                for row in cur.fetchall():
+                    course_name.append(row)
+                    # print(str(course_name[0])[17:-2])
+
+                x+=1
+
+
+
+        i=0
+        while i<len(time_table_id):
+            day = []
+            time = []
+            room = []
+
+            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+
+            print(str(time_table_id[i])[18:-1])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+
+            for row in cur.fetchall():
+                day.append(row)
+            # print(str(day[0])[9:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+
+            for row in cur.fetchall():
+                time.append(row)
+            # print(str(time[0])[10:-2])
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+
+            for row in cur.fetchall():
+                room.append(row)
+            # print(str(room[0])[9:-2])
+
+
+
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
+                                                                                                           10:-2] + '\n')
+
+            self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
+
+            student_id = []
+            student_first_name = []
+            student_last_name = []
+            student_attendence = []
+            student_attendence_flag = []
+
+            cur = self.conn_fyp.cursor()
+            cur.execute(
+                "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(time_table_id[i])[18:-1] + "' order by student_course.student_id")
+
+            for row in cur.fetchall():
+                student_id.append(row)
+            #print(str(student_id[0])[15:-1])
+
+            y = 0
+            while y < len(student_id):
+                cur = self.conn_fyp.cursor()
+                cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_first_name.append(row)
+                # print(str(student_first_name[0])[16:-2])
+
+                cur = self.conn_fyp.cursor()
+                cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_last_name.append(row)
+                # print(str(student_last_name[0])[15:-2])
+
+                student_attendence = []
+                cur = self.conn_fyp.cursor()
+                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[15:-1] + "' and time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
+
+                for row in cur.fetchall():
+                    student_attendence.append(row)
+                # print((str(student_attendence[0])[16:-2]))
+                if student_attendence != []:
+                    student_attendence_flag.append((str(student_attendence[0])[16:-2]))
+                else:
+                    student_attendence_flag.append("No record")
+                # print(str(student_last_name[0])[15:-1])
+
+                y += 1
+
+            x = 0
+            while x < len(student_id):
+                self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[
+                                                                                        16:-2] + ' ' + str(
+                    student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
+                x += 1
+            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+            i+=1
+
+
+
+
+
+        pass
+
+
+    def attendence_search_course(self):
+        if self.section == 1 or self.section == 2:
+            self.search_btn_att.config( command=lambda: self.view_attendence_search_course())
+            self.editAreaTable2.delete("1.0", END)
+            self.editAreaTable2.insert(tk.INSERT, 'Input Course id to Search: ')
+
+    def attendence_search_timetable(self):
+        if self.section ==1 or self.section ==2:
+            self.search_btn_att.config(command=lambda: self.view_attendence_search())
+            self.editAreaTable2.delete("1.0", END)
+            self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
+        elif self.section ==3:
+            self.search_btn_att.config( command=lambda: self.view_attendence_search_student())
+            self.editAreaTable2.delete("1.0", END)
+            self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
+
     def view_attendence(self):
         self.del_list = ''
 
@@ -4410,8 +4732,8 @@ class Gui:
                                command=lambda: self.view_attendence_all_student())
         else:
             self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-        self.btnTR2.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-        self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR2.config(text='Search by\nTimeTable ID', font=("Helvetica", 20, "bold "), bg="grey20", command=lambda:self.attendence_search_timetable())
+        self.btnTR3.config(text='Search by\nCourse ID', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda:self.attendence_search_course())
         self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR6.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -4505,15 +4827,14 @@ class Gui:
                   height=2, command='').pack(
             side=tk.LEFT)
         if self.section ==1 or self.section ==2:
-            tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
-                    width=8, height=2, command=lambda: self.view_attendence_search()).pack(
-                side=tk.LEFT)
+            self.search_btn_att=tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
+                    width=8, height=2, command=lambda: self.view_attendence_search_course())
+            self.search_btn_att.pack(side=tk.LEFT)
         elif self.section ==3:
-            tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
-                      width=8, height=2, command=lambda: self.view_attendence_search_student()).pack(
-                side=tk.LEFT)
-
-        self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
+            self.search_btn_att=tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
+                      width=8, height=2, command=lambda: self.view_attendence_search_course_student())
+            self.search_btn_att.pack(side=tk.LEFT)
+        self.editAreaTable2.insert(tk.INSERT, 'Input Course id to Search: ')
 
         if self.section ==2 :
             self.view_attendence_all()
@@ -5694,6 +6015,228 @@ class Gui:
         elif self.section==3:
             vin3_Login_student_loop.main(self.root)
 
+
+
+
+    def json_create(self):
+
+        #print(str(self.create_input1.get('1.0', 'end-1c')))
+
+        date_now=datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S.%f')
+        Order = {
+            "Notification_content": str(self.create_input1.get('1.0', 'end-1c')),
+            "Notification_time": str(date_now)
+        }
+
+        post = requests.post('http://127.0.0.1:3000/postdata', json=Order)  # the POST request
+        print(post.text)
+
+        self.create_input1.delete("1.0", END)
+        self.date_label.config(
+            text=str(self.user_name[0])[15:-2] + "      " + "Uploaded      " + str(
+                self.date.strftime('%d-%m-%Y') + '      '))
+
+
+    def add_notification(self):
+
+        self.left_frame.pack_forget()
+        self.left_frame = Frame(self.root, background="black",
+                                borderwidth=5, relief="ridge",
+                                width=1000)
+        self.left_frame.pack(side="left",
+                             fill="both",
+                             expand="yes",
+                             )
+
+        self.frameL1 = tk.Frame(self.left_frame)
+        self.frameL1.pack()
+        self.frameL2 = tk.Frame(self.left_frame)
+        self.frameL2.pack()
+        self.frameL3 = tk.Frame(self.left_frame)
+        self.frameL3.pack()
+        self.frameL4 = tk.Frame(self.left_frame)
+        self.frameL4.pack()
+        self.frameL5 = tk.Frame(self.left_frame)
+        self.frameL5.pack()
+        self.frameL6 = tk.Frame(self.left_frame)
+        self.frameL6.pack()
+        self.frameL7 = tk.Frame(self.left_frame)
+        self.frameL7.pack()
+        self.frameL8 = tk.Frame(self.left_frame)
+        self.frameL8.pack()
+        self.frameL9 = tk.Frame(self.left_frame)
+        self.frameL9.pack()
+        self.frameL10 = tk.Frame(self.left_frame)
+        self.frameL10.pack()
+        self.frameL11 = tk.Frame(self.left_frame)
+        self.frameL11.pack()
+
+        self.create_title1 = tk.Label(self.frameL1, text="New Notification", font=("Helvetica", 30),
+                                      fg="white",
+                                      background="black")
+        self.create_title1.pack(side=tk.LEFT)
+
+        self.create_title2 = tk.Label(self.frameL3, text="Please input the followings", font=("Helvetica", 10),
+                                     fg="white",
+                                     background="black")
+        self.create_title2.pack(side=tk.LEFT)
+
+        self.create_label1 = tk.Label(self.frameL4, text="Message: ", font=("Helvetica", 20), fg="white",
+                                      background="black")
+        self.create_label1.pack(side=tk.LEFT)
+
+        self.create_input1 = tkst.ScrolledText(self.frameL5, height=20, width=100, background="white", fg="black",
+                                                font=("Helvetica", 15, "bold"))
+        self.create_input1.pack(side=tk.LEFT)
+
+
+
+
+        self.create_submit = tk.Button(self.frameL6, text='Submit', font=("Helvetica", 20, "bold "), fg="white",
+                                       bg="dark green",
+                                       width=12, height=2, command=lambda: self.json_create())
+        self.create_submit.pack(side=tk.LEFT)
+        self.btnHome.config(command=lambda: self.home_page("table_sub"))
+        pass
+
+
+    def past_notification(self):
+        self.editAreaTable.delete("1.0", END)
+
+        file_name = str(self.id) + ".txt"
+
+
+
+        file1 = open(file_name, "r")
+        file_content = file1.readlines()
+        file1.close()
+        text_content=[]
+        for x in file_content:
+            text_content.append(x)
+
+        i = 0
+        while i < len(text_content):
+            self.editAreaTable.insert(tk.INSERT, text_content[i] )
+            i += 1
+
+        pass
+
+
+    def clear_notification(self):
+        file_name = str(self.id) + ".txt"
+        open(file_name, "w").close()
+        pass
+
+
+    def notification_refresh(self):
+        get = requests.get('http://127.0.0.1:3000/getdata')  # GET request
+        self.reply = get.json()
+        #print(self.reply)
+
+        #print(self.reply["Notification_content"])
+        #print(self.reply["Notification_time"])
+
+        self.editAreaTable.delete("1.0", END)
+        self.editAreaTable.insert(tk.INSERT,self.reply["Notification_time"]+'\n')
+        self.editAreaTable.insert(tk.INSERT, self.reply["Notification_content"] + '\n')
+
+
+        file_name= str(self.id)+".txt"
+        print(str(path.exists(file_name)))
+        if str(path.exists(file_name)) == 'False':
+            #print("111")
+            f=open(file_name, "w+")
+            f.write('')
+            f.close()
+
+        file1 = open(file_name, "r")
+        file_content=file1.readlines()
+        file1.close()
+
+
+
+        #for x in file_content:
+            #print(x)
+        #print(file1.readlines())
+        flag_=False
+        text_content=[]
+        if file_content == []:
+            print("1")
+            file2 = open(file_name, "a")
+            file2.write(self.reply["Notification_time"]+'\n'+self.reply["Notification_content"] + '\n\n')
+            file2.close()
+
+        else:
+            for x in file_content:
+                text_content.append(x)
+
+
+            i = 0
+            while i<len(text_content) and flag_==False:
+                print(len(text_content[0]))
+                print(len(self.reply["Notification_time"]))
+                print(text_content[i])
+                print(self.reply["Notification_time"])
+                if str(self.reply["Notification_time"])==str(text_content[i])[0:-1]:
+                    #print("hello")
+                    flag_ = True
+                i+=1
+            if flag_ == False:
+                file2 = open(file_name, "a")
+                file2.write(self.reply["Notification_time"] + '\n' + self.reply["Notification_content"] + '\n\n')
+                file2.close()
+
+            else:
+                print("3")
+
+
+    def notification_centre(self):
+        self.del_list=''
+
+        self.left_frame.pack_forget()
+        self.left_frame = Frame(self.root, background="black",
+                                borderwidth=5, relief="ridge",
+                                width=600)
+        self.left_frame.pack(side="left",
+                             fill="both",
+                             expand="yes",
+                             )
+
+
+
+
+
+        tk.Label(self.left_frame, bg='black', text='Notification Center',
+                 font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
+
+        self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
+                                               font=("Helvetica", 15, "bold"))
+        self.editAreaTable.pack(fill="both", expand="yes", side="left")
+        '''
+        self.editAreaTable.insert(tk.INSERT,
+                                  "Order id: O001\n\nOrder time: 2/2/2020 11:11:11\n\nSuper Supreme x1 $168\nDelivery fee: $20\nTotal $188\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time: 30 min\n\n\n")
+        self.editAreaTable.insert(tk.INSERT,
+                                  "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
+        '''
+
+
+        self.btnTR1.config(text='Past\nNotifications', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda:self.past_notification())
+        self.btnTR2.config(text='Clear\nNotifications', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda:self.clear_notification())
+        self.btnTR3.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR6.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR7.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+        self.btnTR8.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
+
+        self.btnBack.config(command=lambda: self.home_page("_order"))
+        self.btnHome.config(command=lambda: self.home_page("_order"))
+
+
+        self.notification_refresh()
+
+
+        pass
     def main_page(self, section, order_id, table_id):
 
         self.add_list = ''
@@ -5893,7 +6436,10 @@ class Gui:
 
             self.btn_tb[0][3].config(text="View Attendence", command=lambda: self.view_attendence())
 
+        if self.section == 1 or self.section == 2:
+            self.btnnewnoti.config(command=lambda:self.add_notification())
 
+        self.btnnotification.config(command=lambda:self.notification_centre())
 
         self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20",
                            command='')
@@ -5993,10 +6539,8 @@ class Gui:
         #self.btnbag = tk.Button(self.frameRt, text='Bag: 0', font=("Helvetica", 10, "bold "), width=20,height=1, bg="black", fg="white", command=lambda: self.bag("1"))
         #self.btnbag.pack(side=tk.LEFT)
 
-        self.btnrefresh = tk.Button(self.frameRt, text='⟳', font=("Helvetica", 10, "bold "), width=5,
-                                    height=1, bg="black", fg="white", command='')
-        self.btnrefresh.pack(side=tk.LEFT)
-        self.btnnotification = tk.Button(self.frameRt, text='Notifications', font=("Helvetica", 10, "bold "), width=20,
+
+        self.btnnotification = tk.Button(self.frameRt, text='⟳ Notifications', font=("Helvetica", 10, "bold "), width=20,
                                     height=1, bg="black", fg="white", command='')
         self.btnnotification.pack(side=tk.LEFT)
         if self.section == 1 or self.section == 2:
@@ -6007,21 +6551,21 @@ class Gui:
         if self.section == 1:
             self.date_label.config(bg='dark green')
             self.clock1.configure(font=("Helvetica", 20, "bold"), bg='dark green', fg="white")
-            self.btnrefresh.config(bg="dark green")
+
             self.btnnotification.config(bg="dark green")
             self.btnnewnoti.config(bg="dark green")
             self.frameRt.config(background="dark green")
         elif self.section == 2:
             self.date_label.config(bg='dark red')
             self.clock1.configure(font=("Helvetica", 20, "bold"), bg='dark red', fg="white")
-            self.btnrefresh.config(bg="dark red")
+
             self.btnnotification.config(bg="dark red")
             self.btnnewnoti.config(bg="dark red")
             self.frameRt.config(background="dark red")
         elif self.section == 3:
             self.date_label.config(bg='midnight blue')
             self.clock1.configure(font=("Helvetica", 20, "bold"), bg='midnight blue', fg="white")
-            self.btnrefresh.config(bg="midnight blue")
+
             self.btnnotification.config(bg="midnight blue")
             self.frameRt.config(background="midnight blue")
 
