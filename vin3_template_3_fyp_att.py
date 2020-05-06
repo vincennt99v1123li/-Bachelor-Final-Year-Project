@@ -538,16 +538,13 @@ class Gui:
         self.clock1.pack(side=tk.LEFT)
         self.clock1.configure(font=("Helvetica", 20, "bold"), bg='black', fg="white")
 
-        self.btnbag = tk.Button(self.frameRt, text='Log Out', font=("Helvetica", 10, "bold "), width=20,
-                                height=1, bg="black", fg="white", command=lambda: self.bag("1"))
-        self.btnbag.pack(side=tk.LEFT)
+        #self.btnbag = tk.Button(self.frameRt, text='Log Out', font=("Helvetica", 10, "bold "), width=20,height=1, bg="black", fg="white", command=lambda: self.bag("1"))
+        #self.btnbag.pack(side=tk.LEFT)
 
-        self.btnrefresh = tk.Button(self.frameRt, text='REFRESH', font=("Helvetica", 10, "bold "), width=20,
-                                    height=1, bg="black", fg="white", command=lambda: self.bag("1"))
-        self.btnrefresh.pack(side=tk.LEFT)
+        #self.btnrefresh = tk.Button(self.frameRt, text='REFRESH', font=("Helvetica", 10, "bold "), width=20,height=1, bg="black", fg="white", command=lambda: self.bag("1"))
+        #self.btnrefresh.pack(side=tk.LEFT)
 
-        self.bottom_nvaigation = Frame(self.root, background="black", borderwidth=5,
-                                       relief="ridge", height=35)
+        self.bottom_nvaigation = Frame(self.root, background="black", borderwidth=5,relief="ridge", height=35)
         self.bottom_nvaigation.pack(side="bottom", fill="both",
                                     )
 

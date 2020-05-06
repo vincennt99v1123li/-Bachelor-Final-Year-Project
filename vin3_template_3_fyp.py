@@ -221,11 +221,11 @@ class Gui:
 
         cur = self.conn_fyp.cursor()
 
-
-
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Staff id: ' + str(student_id[x])[11:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -236,13 +236,19 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[13:-1],
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2],
+                                 str(date_of_birth[x])[19:-2], str(position[x])[14:-2]))
 
             x += 1
 
         pass
 
     def staff_order_last_name(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         sex = []
@@ -300,6 +306,7 @@ class Gui:
 
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Student id: ' + str(student_id[x])[13:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -311,12 +318,18 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[13:-1],
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2],
+                                 str(date_of_birth[x])[19:-2], str(position[x])[14:-2]))
 
             x += 1
         pass
 
     def staff_list_all(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         sex = []
@@ -374,6 +387,7 @@ class Gui:
 
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Student id: ' + str(student_id[x])[13:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -385,6 +399,11 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[13:-1] ,
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2],
+                                 str(date_of_birth[x])[19:-2], str(position[x])[14:-2]))
 
             x += 1
         pass
@@ -413,16 +432,48 @@ class Gui:
 
         tk.Label(self.left_frame, bg='black', text='Staff list',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
-
+        '''
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
-        '''
+        
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O001\n\nOrder time: 2/2/2020 11:11:11\n\nSuper Supreme x1 $168\nDelivery fee: $20\nTotal $188\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time: 30 min\n\n\n")
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
         '''
+
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview", font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = ("1", "2", "3", "4", "5")
+        self.tree.column("#0", width=50, minwidth=50)
+        self.tree.column("1", width=150, minwidth=150)
+        self.tree.column("2", width=20, minwidth=20)
+        self.tree.column("3", width=50, minwidth=50)
+        self.tree.column("4", width=50, minwidth=50)
+        #self.tree.column("5", width=20, minwidth=20)
+        # elf.tree.column("6", width=150, minwidth=150)
+
+        # self.tree.column("five", width=100, minwidth=100)
+        # self.tree.column("six", width=100, minwidth=100)
+
+
+        self.tree.heading("#0", text="Student ID", anchor=tk.W)
+        self.tree.heading("1", text="Student Name", anchor=tk.W)
+        self.tree.heading("2", text="Sex", anchor=tk.W)
+        self.tree.heading("3", text="Date of Birth", anchor=tk.W)
+        self.tree.heading("4", text="Position", anchor=tk.W)
+        #self.tree.heading("5", text="Face Trainning", anchor=tk.W)
+        # self.tree.heading("6", text="Teacher Name", anchor=tk.W)
+
+        # self.tree.heading("five", text="Student ID", anchor=tk.W)
+        # self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
 
         self.btnTR1.config(text='Order by\nLast Name', font=("Helvetica", 20, "bold "), bg="grey20",
                            command=lambda:self.staff_order_last_name())
@@ -1181,7 +1232,7 @@ class Gui:
 
 
     def student_search_id(self):
-
+        self.tree.delete(*self.tree.get_children())
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -1245,9 +1296,10 @@ class Gui:
 
 
 
-        self.editAreaTable.delete("1.0", END)
+        #self.editAreaTable.delete("1.0", END)
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Student id: ' + str(student_id[x])[15:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -1259,13 +1311,19 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[15:-1],
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2],
+                                 str(date_of_birth[x])[19:-2], str(face_cap[x])[14:-2], str(face_train[x])[16:-2]))
 
             x += 1
 
         pass
 
     def student_order_last_name(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         sex = []
@@ -1328,6 +1386,7 @@ class Gui:
 
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Student id: ' + str(student_id[x])[15:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -1339,12 +1398,18 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[15:-1],
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2],
+                                 str(date_of_birth[x])[19:-2], str(face_cap[x])[14:-2], str(face_train[x])[16:-2]))
 
             x += 1
         pass
 
     def student_list_all(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         sex = []
@@ -1407,6 +1472,7 @@ class Gui:
 
         x = 0
         while x < len(student_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Student id: ' + str(student_id[x])[15:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Name: ' + str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2] + '\n')
@@ -1418,6 +1484,10 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(student_id[x])[15:-1],
+                             values=(
+                                 str(first_name[x])[16:-2] + ' ' + str(last_name[x])[15:-2], str(sex[x])[9:-2], str(date_of_birth[x])[19:-2],str(face_cap[x])[14:-2] ,str(face_train[x])[16:-2]))
 
             x += 1
         pass
@@ -1444,16 +1514,50 @@ class Gui:
                                )
         tk.Label(self.left_frame, bg='black', text='Student List',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
-
+        '''
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
-        '''
+        
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O001\n\nOrder time: 2/2/2020 11:11:11\n\nSuper Supreme x1 $168\nDelivery fee: $20\nTotal $188\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time: 30 min\n\n\n")
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
         '''
+
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview", font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = ("1", "2","3", "4","5")
+        self.tree.column("#0", width=50, minwidth=50)
+        self.tree.column("1", width=150, minwidth=150)
+        self.tree.column("2", width=20, minwidth=20)
+        self.tree.column("3", width=50, minwidth=50)
+        self.tree.column("4", width=20, minwidth=20)
+        self.tree.column("5", width=20, minwidth=20)
+        #elf.tree.column("6", width=150, minwidth=150)
+
+        # self.tree.column("five", width=100, minwidth=100)
+        # self.tree.column("six", width=100, minwidth=100)
+
+
+        self.tree.heading("#0", text="Student ID", anchor=tk.W)
+        self.tree.heading("1", text="Student Name", anchor=tk.W)
+        self.tree.heading("2", text="Sex", anchor=tk.W)
+        self.tree.heading("3", text="Date of Birth", anchor=tk.W)
+        self.tree.heading("4", text="Face Capture", anchor=tk.W)
+        self.tree.heading("5", text="Face Trainning", anchor=tk.W)
+        #self.tree.heading("6", text="Teacher Name", anchor=tk.W)
+
+        # self.tree.heading("five", text="Student ID", anchor=tk.W)
+        # self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
+
+
 
         self.btnTR1.config(text='Order by\nLast Name', font=("Helvetica", 20, "bold "), bg="grey20",
                            command=lambda:self.student_order_last_name())
@@ -1845,7 +1949,8 @@ class Gui:
 
 
     def course_list_my(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         course_id = []
@@ -1915,6 +2020,7 @@ class Gui:
 
         x = 0
         while x < len(course_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Course ID: ' +str(course_id[x])[14:-1]+ '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Course Name: ' + str(course_name[x])[17:-2] + '\n')
@@ -1927,13 +2033,22 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
-
+            '''
+            if self.section == 3:
+                self.tree.insert("", "end", "", text=str(course_id[x])[14:-1] + " " + str(course_name[x])[17:-2],
+                                values=(
+                                str(staff_id[x])[13:-1], str(first_name[x])[16:-2] + " " + str(last_name[x])[15:-2]))
+            else:
+                self.tree.insert("", "end", "", text=str(course_id[x])[14:-1] + " " + str(course_name[x])[17:-2],
+                                 values=(
+                                     "",""))
             x += 1
 
         pass
 
     def course_list_all(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         first_name = []
         last_name = []
         course_id = []
@@ -1985,6 +2100,7 @@ class Gui:
 
         x = 0
         while x < len(course_id):
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Course ID: ' +str(course_id[x])[14:-1]+ '\n')
             self.editAreaTable.insert(tk.INSERT,
                                       'Course Name: ' + str(course_name[x])[17:-2] + '\n')
@@ -1996,6 +2112,9 @@ class Gui:
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
             self.editAreaTable.insert(tk.INSERT, '\n')
+            '''
+            self.tree.insert("", "end", "", text=str(course_id[x])[14:-1] + " " + str(course_name[x])[17:-2],
+                             values=(str(staff_id[x])[13:-1], str(first_name[x])[16:-2]+" "+str(last_name[x])[15:-2]))
 
             x += 1
 
@@ -2020,15 +2139,44 @@ class Gui:
         tk.Label(self.left_frame, bg='black', text='Course list',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
+        '''
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
-        '''
+        
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O001\n\nOrder time: 2/2/2020 11:11:11\n\nSuper Supreme x1 $168\nDelivery fee: $20\nTotal $188\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time: 30 min\n\n\n")
         self.editAreaTable.insert(tk.INSERT,
                                   "Order id: O124\n\nOrder time: 1/2/2020 11:11:11\n\nSupreme x2 $296\nDelivery fee: $20\nTotal $316\n\nDelivery Location: Flat B, 23/F, Block 66, XYZ Garden, 8 Testing Road, HK\nPayment: Cash\nDelivery time:1/2/2020 11:33:11")
         '''
+
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview", font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = ("4", "5")
+        self.tree.column("#0", width=120, minwidth=120)
+
+        self.tree.column("4", width=50, minwidth=50)
+        self.tree.column("5", width=150, minwidth=150)
+
+        # self.tree.column("five", width=100, minwidth=100)
+        # self.tree.column("six", width=100, minwidth=100)
+
+
+        self.tree.heading("#0", text="Course ID&Name", anchor=tk.W)
+
+        self.tree.heading("4", text="Staff ID", anchor=tk.W)
+        self.tree.heading("5", text="Teacher Name", anchor=tk.W)
+
+        # self.tree.heading("five", text="Student ID", anchor=tk.W)
+        # self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
+
+
 
         if self.section ==2:
             self.btnTR1.config(text='My Course', font=("Helvetica", 20, "bold "), bg="grey20",
@@ -2713,7 +2861,7 @@ class Gui:
 
 
     def add_timetable_update(self):
-        sql = ("insert into `course_timetable` (`course_id`,`day`,`time`,`room`) values ( '" + str( self.option_list)+"','"+self.create_input3.get()+"-"+self.create_input4.get()+"-"+self.create_input5.get()+"','"+self.create_input6.get()+"','"+self.create_input7.get()+"')")
+        sql = ("insert into `course_timetable` (`course_id`,`day`,`time`,`room`) values ( '" + str( self.option_list)+"','"+self.create_input4.get()+"-"+self.create_input3.get()+"-"+self.create_input5.get()+"','"+self.create_input6.get()+"','"+self.create_input7.get()+"')")
 
         self.cur_fyp.execute(sql)
         self.cur_fyp.execute('commit')
@@ -3325,7 +3473,7 @@ class Gui:
 
 
     def view_timetable_search(self):
-
+        self.tree.delete(*self.tree.get_children())
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -3418,27 +3566,29 @@ class Gui:
         if (self.section == 2 and str(staff_id[0])[13:-1] == str(
                 self.id)) or self.section == 1 or section3_flag == True:
 
-
+            '''
             self.editAreaTable.delete("1.0", END)
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
             self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
             self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
-
-
+            '''
+            self.tree.insert("", "end", "", text=str(option_list) + ' ' + str(course_name[0])[17:-2],values=("", "", ""))
             x = 0
             while x < len(time_table_id):
-                self.editAreaTable.insert(tk.INSERT, str(time_table_id[x])[18:-1]+' '+str(day[x])[9:-2]+' '+str(time[x])[10:-2]+' '+str(room[x])[10:-2] + '\n')
+                #self.editAreaTable.insert(tk.INSERT, str(time_table_id[x])[18:-1]+' '+str(day[x])[9:-2]+' '+str(time[x])[10:-2]+' '+str(room[x])[10:-2] + '\n')
 
-
+                self.tree.insert("", "end", "", values=(str(time_table_id[x])[18:-1], str(day[x])[9:-2] + ' ' + str(
+                    time[x])[10:-2], str(room[x])[10:-2]))
 
                 x += 1
 
         pass
 
     def view_timetable_all(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -3500,9 +3650,14 @@ class Gui:
             time = []
             room = []
             time_table_id = []
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1]+ '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
+            '''
+
+            self.tree.insert("", "end", "",text=str(course_id[i])[14:-1]+' '+ str(course_name[i])[17:-2],values=( "", "", ""))
+
             cur = self.conn_fyp.cursor()
             cur.execute(
                 "select time_table_id  from course_timetable where course_id = '" +str(course_id[i])[14:-1] + "' order by day")
@@ -3534,12 +3689,15 @@ class Gui:
 
             x = 0
             while x < len(time_table_id):
+                '''
                 self.editAreaTable.insert(tk.INSERT,
                                               str(time_table_id[x])[18:-1] + ' ' + str(day[x])[9:-2] + ' ' + str(
                                                   time[x])[10:-2] + ' ' + str(room[x])[10:-2] + '\n')
-
+                '''
+                self.tree.insert("", "end", "", values=(str(time_table_id[x])[18:-1], str(day[x])[9:-2] + ' ' + str(
+                                                  time[x])[10:-2], str(room[x])[10:-2]))
                 x += 1
-            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+            #self.editAreaTable.insert(tk.INSERT, '\n\n\n')
             i+=1
 
 
@@ -3549,7 +3707,8 @@ class Gui:
         pass
 
     def view_timetable_today(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -3623,9 +3782,15 @@ class Gui:
             time = []
             room = []
             time_table_id = []
+            '''
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1]+ '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'TImetable (id/day/time/room)\n')
+            '''
+
+            self.tree.insert("", "end", "", text=str(course_id[i])[14:-1] + ' ' + str(course_name[i])[17:-2],
+                             values=("", "", ""))
+
             cur = self.conn_fyp.cursor()
             cur.execute(
                 "select time_table_id  from course_timetable where course_id = '" +str(course_id[i])[14:-1] + "' and day ='"+date_today+"'")
@@ -3657,12 +3822,15 @@ class Gui:
 
             x = 0
             while x < len(time_table_id):
+                '''
                 self.editAreaTable.insert(tk.INSERT,
                                               str(time_table_id[x])[18:-1] + ' ' + str(day[x])[9:-2] + ' ' + str(
                                                   time[x])[10:-2] + ' ' + str(room[x])[10:-2] + '\n')
-
+                '''
+                self.tree.insert("", "end", "", values=(str(time_table_id[x])[18:-1], str(day[x])[9:-2] + ' ' + str(
+                    time[x])[10:-2], str(room[x])[10:-2]))
                 x += 1
-            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+           # self.editAreaTable.insert(tk.INSERT, '\n\n\n')
             i+=1
 
 
@@ -3693,10 +3861,38 @@ class Gui:
 
         tk.Label(self.left_frame, bg='black', text='View Timetable',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
-
+        '''
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
+        '''
+
+
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview", font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = ("1", "2", "3")
+        self.tree.column("#0", width=120, minwidth=120)
+        self.tree.column("1", width=50, minwidth=50)
+        self.tree.column("2", width=120, minwidth=120)
+        self.tree.column("3", width=50, minwidth=50)
+
+        # self.tree.column("five", width=100, minwidth=100)
+        # self.tree.column("six", width=100, minwidth=100)
+
+
+        self.tree.heading("#0", text="Course ID&Name", anchor=tk.W)
+        self.tree.heading("1", text="Timetable ID", anchor=tk.W)
+        self.tree.heading("2", text="DateTime", anchor=tk.W)
+        self.tree.heading("3", text="Room", anchor=tk.W)
+
+        # self.tree.heading("five", text="Student ID", anchor=tk.W)
+        # self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
 
         if self.section == 2 or self.section == 3:
             self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
@@ -3811,46 +4007,47 @@ class Gui:
 
 
 
-    def view_attendence_search_student(self):
 
+
+
+    def view_attendence_search_student_2(self):
+        self.tree.delete(*self.tree.get_children())
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-
-        course_id=[]
-        course_name=[]
+        course_id = []
+        course_name = []
         staff_id = []
         time_table_id = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
 
-
-        day=[]
-        time=[]
-        room=[]
+        day = []
+        time = []
+        room = []
 
         cur = self.conn_fyp.cursor()
         cur.execute("select course_id from course_timetable where time_table_id = '" + str(option_list) + "'")
 
         for row in cur.fetchall():
             course_id.append(row)
-        #print(str(course_id[0])[14:-1])
+        # print(str(course_id[0])[14:-1])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select course_name from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+        cur.execute("select course_name from course where course_id = '" + str(course_id[0])[14:-1] + "'")
 
         for row in cur.fetchall():
             course_name.append(row)
-        #print(str(course_name[0])[17:-2])
+        # print(str(course_name[0])[17:-2])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select staff_id from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+        cur.execute("select staff_id from course where course_id = '" + str(course_id[0])[14:-1] + "'")
 
         for row in cur.fetchall():
             staff_id.append(row)
-        #print(str(staff_id[0])[13:-1])
+        # print(str(staff_id[0])[13:-1])
 
 
 
@@ -3859,35 +4056,35 @@ class Gui:
 
         for row in cur.fetchall():
             day.append(row)
-        #print(str(day[0])[9:-2])
+        # print(str(day[0])[9:-2])
 
         cur = self.conn_fyp.cursor()
         cur.execute("select time  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
 
         for row in cur.fetchall():
             time.append(row)
-        #print(str(time[0])[10:-2])
+        # print(str(time[0])[10:-2])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select room  from course_timetable where time_table_id = '" +str(option_list) + "' order by day")
+        cur.execute("select room  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
 
         for row in cur.fetchall():
             room.append(row)
-        #print(str(room[0])[9:-2])
+        # print(str(room[0])[9:-2])
 
         cur = self.conn_fyp.cursor()
         cur.execute("select first_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
 
         for row in cur.fetchall():
             teacher_first_name.append(row)
-        #print(str(teacher_first_name[0])[16:-2])
+        # print(str(teacher_first_name[0])[16:-2])
 
         cur = self.conn_fyp.cursor()
         cur.execute("select last_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
 
         for row in cur.fetchall():
             teacher_last_name.append(row)
-        #print(str(teacher_last_name[0])[15:-2])
+        # print(str(teacher_last_name[0])[15:-2])
 
 
         section3_flag = False
@@ -3908,27 +4105,30 @@ class Gui:
         if (self.section == 2 and str(staff_id[0])[13:-1] == str(
                 self.id)) or self.section == 1 or section3_flag == True:
 
+            '''
             self.editAreaTable.delete("1.0", END)
             self.editAreaTable.insert(tk.INSERT, 'Timetable id: ' + str(option_list) + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[0])[14:-1] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
+            self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2] + ' ' + str(
+                teacher_last_name[0])[15:-2] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n')
-            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[10:-2] + '\n\n\n')
+            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
+                                                                                                           10:-2] + '\n\n\n')
+            '''
 
 
 
-
-
-            student_id=[]
-            student_first_name=[]
+            student_id = []
+            student_first_name = []
             student_last_name = []
-            student_attendence=[]
+            student_attendence = []
             student_attendence_flag = []
 
             student_attendence = []
             cur = self.conn_fyp.cursor()
-            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+            cur.execute("select Login_date from login_record where student_id = '" + str(
+                self.id) + "' and time_table_id = '" + str(
                 option_list) + "'")
 
             for row in cur.fetchall():
@@ -3940,52 +4140,53 @@ class Gui:
                 student_attendence_flag.append("No record")
             # print(str(student_last_name[0])[15:-1])
 
-            self.editAreaTable.insert(tk.INSERT,str(student_attendence_flag[0]) + '\n')
+            #self.editAreaTable.insert(tk.INSERT, str(student_attendence_flag[0]) + '\n')
+            self.tree.insert("", "end", "", text=str(course_id[0])[14:-1] + " " + str(course_name[0])[17:-2],
+                             values=(str(option_list), str(day[0])[9:-2] + ' ' + str(time[0])[10:-2],
+                                     str(room[0])[10:-2], "", "",  str(student_attendence_flag[0])))
 
 
         pass
 
-    def view_attendence_search(self):
-
+    def view_attendence_search_2(self):
+        self.tree.delete(*self.tree.get_children())
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-
-        course_id=[]
-        course_name=[]
+        course_id = []
+        course_name = []
         staff_id = []
         time_table_id = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
 
-
-        day=[]
-        time=[]
-        room=[]
+        day = []
+        time = []
+        room = []
 
         cur = self.conn_fyp.cursor()
         cur.execute("select course_id from course_timetable where time_table_id = '" + str(option_list) + "'")
 
         for row in cur.fetchall():
             course_id.append(row)
-        #print(str(course_id[0])[14:-1])
+        # print(str(course_id[0])[14:-1])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select course_name from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+        cur.execute("select course_name from course where course_id = '" + str(course_id[0])[14:-1] + "'")
 
         for row in cur.fetchall():
             course_name.append(row)
-        #print(str(course_name[0])[17:-2])
+        # print(str(course_name[0])[17:-2])
+
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select staff_id from course where course_id = '"+str(course_id[0])[14:-1]+"'")
+        cur.execute("select staff_id from course where course_id = '" + str(course_id[0])[14:-1] + "'")
 
         for row in cur.fetchall():
             staff_id.append(row)
-        #print(str(staff_id[0])[13:-1])
-
+            # print(str(staff_id[0])[13:-1])
 
 
         cur = self.conn_fyp.cursor()
@@ -3993,35 +4194,22 @@ class Gui:
 
         for row in cur.fetchall():
             day.append(row)
-        #print(str(day[0])[9:-2])
+        # print(str(day[0])[9:-2])
 
         cur = self.conn_fyp.cursor()
         cur.execute("select time  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
 
         for row in cur.fetchall():
             time.append(row)
-        #print(str(time[0])[10:-2])
+        # print(str(time[0])[10:-2])
 
         cur = self.conn_fyp.cursor()
-        cur.execute("select room  from course_timetable where time_table_id = '" +str(option_list) + "' order by day")
+        cur.execute("select room  from course_timetable where time_table_id = '" + str(option_list) + "' order by day")
 
         for row in cur.fetchall():
             room.append(row)
-        #print(str(room[0])[9:-2])
+        # print(str(room[0])[9:-2])
 
-        cur = self.conn_fyp.cursor()
-        cur.execute("select first_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
-
-        for row in cur.fetchall():
-            teacher_first_name.append(row)
-        #print(str(teacher_first_name[0])[16:-2])
-
-        cur = self.conn_fyp.cursor()
-        cur.execute("select last_name from staff where staff_id = '" + str(staff_id[0])[13:-1] + "'")
-
-        for row in cur.fetchall():
-            teacher_last_name.append(row)
-        #print(str(teacher_last_name[0])[15:-2])
 
 
         student_id = []
@@ -4039,9 +4227,8 @@ class Gui:
             student_id.append(row)
         print(str(student_id[0])[15:-1])
 
-
-
         if (self.section == 2 and str(staff_id[0])[13:-1] == str(self.id)) or self.section == 1:
+            '''
             self.editAreaTable.delete("1.0", END)
             self.editAreaTable.insert(tk.INSERT, 'Timetable id: ' + str(option_list) + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[0])[14:-1] + '\n')
@@ -4053,7 +4240,10 @@ class Gui:
                                                                                                            10:-2] + '\n\n\n')
 
             self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
-
+            '''
+            self.tree.insert("", "end", "", text=str(course_id[0])[14:-1] + " " + str(course_name[0])[17:-2],
+                             values=(str(option_list), str(day[0])[9:-2] + ' ' + str(time[0])[10:-2],
+                                     str(room[0])[10:-2], "", "", ""))
             y = 0
             while y < len(student_id):
                 cur = self.conn_fyp.cursor()
@@ -4089,48 +4279,54 @@ class Gui:
 
             x = 0
             while x < len(student_id):
+                self.tree.insert("", "end", "",
+                                 values=("", "", "", str(student_id[x])[15:-1],
+                                         str(student_first_name[x])[16:-2] + ' ' + str(student_last_name[x])[15:-2],
+                                         str(student_attendence_flag[x])))
+                '''
                 self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[
                                                                                         16:-2] + ' ' + str(
                     student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
+                '''
                 x += 1
 
         pass
 
-    def view_attendence_all_student(self):
-        self.editAreaTable.delete("1.0", END)
+    def view_attendence_all_student_2(self):
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-        course_name=[]
+        course_name = []
         staff_id = []
         student_id = []
-        course_id=[]
+        course_id = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
         student_first_name = []
-        student_last_name=[]
-
-
+        student_last_name = []
 
         day = []
         time = []
         room = []
 
-        time_table_id=[]
+        time_table_id = []
 
         if self.section == 3:
             cur = self.conn_fyp.cursor()
-            cur.execute("select DISTINCT time_table_id from login_record where student_id = '"+str(self.id)+"'")
+            cur.execute("select DISTINCT time_table_id from login_record where student_id = '" + str(self.id) + "'")
             for row in cur.fetchall():
                 time_table_id.append(row)
-            #print(str(time_table_id[0])[18:-1])
+            # print(str(time_table_id[0])[18:-1])
 
-            x=0
-            while x< len(time_table_id):
+            x = 0
+            while x < len(time_table_id):
                 cur = self.conn_fyp.cursor()
-                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+                cur.execute("select course_id from course_timetable where time_table_id = '" + str(time_table_id[x])[
+                                                                                               18:-1] + "'")
 
                 for row in cur.fetchall():
                     course_id.append(row)
@@ -4138,31 +4334,27 @@ class Gui:
 
                 cur = self.conn_fyp.cursor()
                 cur.execute(
-                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1] + "'")
 
                 for row in cur.fetchall():
                     course_name.append(row)
                     # print(str(course_name[0])[17:-2])
 
-                x+=1
+                x += 1
 
-
-
-        i=0
-        while i<len(time_table_id):
+        i = 0
+        while i < len(time_table_id):
             day = []
             time = []
             room = []
 
-            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+
 
             print(str(time_table_id[i])[18:-1])
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 day.append(row)
@@ -4170,7 +4362,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+                "select time  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 time.append(row)
@@ -4178,7 +4370,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 room.append(row)
@@ -4186,8 +4378,6 @@ class Gui:
 
 
 
-            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
-                                                                                                           10:-2] + '\n')
 
 
 
@@ -4199,7 +4389,8 @@ class Gui:
 
             student_attendence = []
             cur = self.conn_fyp.cursor()
-            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+            cur.execute("select Login_date from login_record where student_id = '" + str(
+                self.id) + "' and time_table_id = '" + str(
                 time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
@@ -4210,40 +4401,38 @@ class Gui:
             else:
                 student_attendence_flag.append("No record")
 
-
-
-            self.editAreaTable.insert(tk.INSERT,  str(student_attendence_flag[0]) + '\n\n\n')
-            i+=1
-
-
-
-
+            #self.editAreaTable.insert(tk.INSERT,  + '\n\n\n')
+            self.tree.insert("", "end", "", text=str(course_id[i])[14:-1] + " " + str(course_name[i])[17:-2],
+                             values=(str(time_table_id[i])[18:-1], str(day[0])[9:-2] + ' ' + str(time[0])[10:-2],
+                                     str(room[0])[10:-2], "", "", str(student_attendence_flag[0])))
+            i += 1
 
         pass
 
-    def view_attendence_all(self):
-        self.editAreaTable.delete("1.0", END)
+    def view_attendence_all_2(self):
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-        course_name=[]
+        course_name = []
         staff_id = []
         student_id = []
-        course_id=[]
+        course_id = []
+        course_name_total=[]
+        course_id_total = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
         student_first_name = []
-        student_last_name=[]
-
-
+        student_last_name = []
 
         day = []
         time = []
         room = []
 
-        time_table_id=[]
+        time_table_id = []
 
         if self.section == 2:
             cur = self.conn_fyp.cursor()
@@ -4254,10 +4443,13 @@ class Gui:
                 time_table_id.append(row)
             print(str(time_table_id[0])[18:-1])
 
-            x=0
-            while x< len(time_table_id):
+
+
+            x = 0
+            while x < len(time_table_id):
                 cur = self.conn_fyp.cursor()
-                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+                cur.execute("select course_id from course_timetable where time_table_id = '" + str(time_table_id[x])[
+                                                                                               18:-1] + "'")
 
                 for row in cur.fetchall():
                     course_id.append(row)
@@ -4265,31 +4457,41 @@ class Gui:
 
                 cur = self.conn_fyp.cursor()
                 cur.execute(
-                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1] + "'")
 
                 for row in cur.fetchall():
                     course_name.append(row)
                     # print(str(course_name[0])[17:-2])
 
-                x+=1
+                x += 1
 
-
-
-        i=0
-        while i<len(time_table_id):
+        i = 0
+        while i < len(time_table_id):
             day = []
             time = []
             room = []
 
-            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+            print(str(course_name[i])[17:-2])
 
-            print(str(time_table_id[i])[18:-1])
+
+
+            #if
+
+            #folder1 = self.tree.insert("", 1, "", text=str(a[i]))
+
+            #folder2 = self.tree.insert(folder1, 1, "", text=str(time_table_id[i])[18:-1])
+
+            #self.tree.insert("", "end", "", text=str(course_id[i])[14:-1]+" "+str(course_name[i])[17:-2],values=(str(time_table_id[i])[18:-1] ,"","","","" ) )
+
+            #self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' + str(time_table_id[i])[18:-1] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+
+            #print(str(time_table_id[i])[18:-1])
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 day.append(row)
@@ -4297,7 +4499,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+                "select time  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 time.append(row)
@@ -4305,18 +4507,19 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 room.append(row)
             # print(str(room[0])[9:-2])
 
 
+            self.tree.insert("", "end", "", text=str(course_id[i])[14:-1] + " " + str(course_name[i])[17:-2],
+                             values=(str(time_table_id[i])[18:-1], str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] , str(room[0])[10:-2], "", "",""))
 
-            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
-                                                                                                           10:-2] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[10:-2] + '\n')
 
-            self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
 
             student_id = []
             student_first_name = []
@@ -4326,11 +4529,12 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(time_table_id[i])[18:-1] + "' order by student_course.student_id")
+                "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(
+                    time_table_id[i])[18:-1] + "' order by student_course.student_id")
 
             for row in cur.fetchall():
                 student_id.append(row)
-            #print(str(student_id[0])[15:-1])
+            # print(str(student_id[0])[15:-1])
 
             y = 0
             while y < len(student_id):
@@ -4350,7 +4554,9 @@ class Gui:
 
                 student_attendence = []
                 cur = self.conn_fyp.cursor()
-                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[15:-1] + "' and time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
+                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[
+                                                                                         15:-1] + "' and time_table_id = '" + str(
+                    time_table_id[i])[18:-1] + "'")
 
                 for row in cur.fetchall():
                     student_attendence.append(row)
@@ -4365,61 +4571,56 @@ class Gui:
 
             x = 0
             while x < len(student_id):
-                self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[
-                                                                                        16:-2] + ' ' + str(
-                    student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
+                self.tree.insert("", "end", "",
+                                 values=("","","",str(student_id[x])[15:-1],str(student_first_name[x])[16:-2]+ ' ' + str(student_last_name[x])[15:-2] , str(student_attendence_flag[x])))
+                #self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[16:-2] + ' ' + str(student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
                 x += 1
-            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
-            i+=1
-
+            #self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+            i += 1
 
 
 
 
         pass
 
-
-
-    def view_attendence_search_course_student(self):
-        self.editAreaTable.delete("1.0", END)
+    def view_attendence_search_course_student_2(self):
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-        course_name=[]
+        course_name = []
         staff_id = []
         student_id = []
-        course_id=[]
+        course_id = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
         student_first_name = []
-        student_last_name=[]
-
-
+        student_last_name = []
 
         day = []
         time = []
         room = []
 
-        time_table_id=[]
+        time_table_id = []
 
         if self.section == 3:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "SELECT course_timetable.time_table_id from course_timetable inner join student_course on student_course.course_id = course_timetable.course_id where student_course.course_id = '"+str(option_list)+"' and student_course.student_id ='"+str(self.id)+"'")
+                "SELECT course_timetable.time_table_id from course_timetable inner join student_course on student_course.course_id = course_timetable.course_id where student_course.course_id = '" + str(
+                    option_list) + "' and student_course.student_id ='" + str(self.id) + "'")
             for row in cur.fetchall():
                 time_table_id.append(row)
             print(str(time_table_id[0])[18:-1])
 
-
-
-
-            x=0
-            while x< len(time_table_id):
+            x = 0
+            while x < len(time_table_id):
                 cur = self.conn_fyp.cursor()
-                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+                cur.execute("select course_id from course_timetable where time_table_id = '" + str(time_table_id[x])[
+                                                                                               18:-1] + "'")
 
                 for row in cur.fetchall():
                     course_id.append(row)
@@ -4427,31 +4628,26 @@ class Gui:
 
                 cur = self.conn_fyp.cursor()
                 cur.execute(
-                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1] + "'")
 
                 for row in cur.fetchall():
                     course_name.append(row)
                     # print(str(course_name[0])[17:-2])
 
-                x+=1
+                x += 1
 
-
-
-        i=0
-        while i<len(time_table_id):
+        i = 0
+        while i < len(time_table_id):
             day = []
             time = []
             room = []
 
-            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
 
             print(str(time_table_id[i])[18:-1])
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 day.append(row)
@@ -4459,7 +4655,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+                "select time  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 time.append(row)
@@ -4467,7 +4663,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 room.append(row)
@@ -4475,8 +4671,6 @@ class Gui:
 
 
 
-            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
-                                                                                                           10:-2] + '\n')
 
 
 
@@ -4488,7 +4682,8 @@ class Gui:
 
             student_attendence = []
             cur = self.conn_fyp.cursor()
-            cur.execute("select Login_date from login_record where student_id = '" + str(self.id) + "' and time_table_id = '" + str(
+            cur.execute("select Login_date from login_record where student_id = '" + str(
+                self.id) + "' and time_table_id = '" + str(
                 time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
@@ -4500,47 +4695,43 @@ class Gui:
                 student_attendence_flag.append("No record")
                 # print(str(student_last_name[0])[15:-1])
 
-            self.editAreaTable.insert(tk.INSERT, str(student_attendence_flag[0]) + '\n\n')
+            #self.editAreaTable.insert(tk.INSERT, str(student_attendence_flag[0]) + '\n\n')
+            self.tree.insert("", "end", "", text=str(course_id[i])[14:-1] + " " + str(course_name[i])[17:-2],
+                             values=(str(time_table_id[i])[18:-1], str(day[0])[9:-2] + ' ' + str(time[0])[10:-2],
+                                     str(room[0])[10:-2], "", "", str(student_attendence_flag[0])))
 
-
-         
-            i+=1
-
-
-
-
+            i += 1
 
         pass
 
-
-    def view_attendence_search_course(self):
-        self.editAreaTable.delete("1.0", END)
+    def view_attendence_search_course_2(self):
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
 
-        course_name=[]
+        course_name = []
         staff_id = []
         student_id = []
-        course_id=[]
+        course_id = []
 
-        teacher_first_name=[]
+        teacher_first_name = []
         teacher_last_name = []
         student_first_name = []
-        student_last_name=[]
-
-
+        student_last_name = []
 
         day = []
         time = []
         room = []
 
-        time_table_id=[]
+        time_table_id = []
 
         if self.section == 1:
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "SELECT course_timetable.time_table_id from course_timetable inner join course on course.course_id = course_timetable.course_id where course.course_id = '"+str(option_list)+"'")
+                "SELECT course_timetable.time_table_id from course_timetable inner join course on course.course_id = course_timetable.course_id where course.course_id = '" + str(
+                    option_list) + "'")
             for row in cur.fetchall():
                 time_table_id.append(row)
             print(str(time_table_id[0])[18:-1])
@@ -4548,18 +4739,17 @@ class Gui:
             cur = self.conn_fyp.cursor()
             cur.execute(
                 "SELECT course_timetable.time_table_id from course_timetable inner join course on course.course_id = course_timetable.course_id where course.course_id = '" + str(
-                    option_list) + "' and course.staff_id ='"+str(self.id)+"'")
+                    option_list) + "' and course.staff_id ='" + str(self.id) + "'")
             for row in cur.fetchall():
                 time_table_id.append(row)
             print(str(time_table_id[0])[18:-1])
 
-
-
         if self.section == 1 or self.section == 2:
-            x=0
-            while x< len(time_table_id):
+            x = 0
+            while x < len(time_table_id):
                 cur = self.conn_fyp.cursor()
-                cur.execute("select course_id from course_timetable where time_table_id = '" +str(time_table_id[x])[18:-1]+"'")
+                cur.execute("select course_id from course_timetable where time_table_id = '" + str(time_table_id[x])[
+                                                                                               18:-1] + "'")
 
                 for row in cur.fetchall():
                     course_id.append(row)
@@ -4567,31 +4757,29 @@ class Gui:
 
                 cur = self.conn_fyp.cursor()
                 cur.execute(
-                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1]+"'" )
+                    "select course_name from course where course_id = '" + str(course_id[x])[14:-1] + "'")
 
                 for row in cur.fetchall():
                     course_name.append(row)
                     # print(str(course_name[0])[17:-2])
 
-                x+=1
+                x += 1
 
-
-
-        i=0
-        while i<len(time_table_id):
+        i = 0
+        while i < len(time_table_id):
             day = []
             time = []
             room = []
 
-            self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' +str(time_table_id[i])[18:-1] + '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1]+ '\n')
-            self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Timetable ID: ' + str(time_table_id[i])[18:-1] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Course ID: ' + str(course_id[i])[14:-1] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
 
             print(str(time_table_id[i])[18:-1])
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] +"'")
+                "select day  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 day.append(row)
@@ -4599,7 +4787,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select time  from course_timetable where time_table_id = '" +str(time_table_id[i])[18:-1]+"'")
+                "select time  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 time.append(row)
@@ -4607,7 +4795,7 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1]+"'" )
+                "select room  from course_timetable where time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
 
             for row in cur.fetchall():
                 room.append(row)
@@ -4615,10 +4803,13 @@ class Gui:
 
 
 
-            self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[
-                                                                                                           10:-2] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, str(day[0])[9:-2] + ' ' + str(time[0])[10:-2] + ' room' + str(room[0])[10:-2] + '\n')
 
-            self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
+            self.tree.insert("", "end", "", text=str(course_id[i])[14:-1] + " " + str(course_name[i])[17:-2],
+                             values=(str(time_table_id[i])[18:-1], str(day[0])[9:-2] + ' ' + str(time[0])[10:-2],
+                                     str(room[0])[10:-2], "", "", ""))
+
+            #self.editAreaTable.insert(tk.INSERT, 'Student List (ID/name/attendence)\n')
 
             student_id = []
             student_first_name = []
@@ -4628,11 +4819,12 @@ class Gui:
 
             cur = self.conn_fyp.cursor()
             cur.execute(
-                "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(time_table_id[i])[18:-1] + "' order by student_course.student_id")
+                "select student_course.student_id from student_course inner join course_timetable on student_course.course_id = course_timetable.course_id where course_timetable.time_table_id = '" + str(
+                    time_table_id[i])[18:-1] + "' order by student_course.student_id")
 
             for row in cur.fetchall():
                 student_id.append(row)
-            #print(str(student_id[0])[15:-1])
+            # print(str(student_id[0])[15:-1])
 
             y = 0
             while y < len(student_id):
@@ -4652,7 +4844,9 @@ class Gui:
 
                 student_attendence = []
                 cur = self.conn_fyp.cursor()
-                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[15:-1] + "' and time_table_id = '" + str(time_table_id[i])[18:-1] + "'")
+                cur.execute("select Login_date from login_record where student_id = '" + str(student_id[y])[
+                                                                                         15:-1] + "' and time_table_id = '" + str(
+                    time_table_id[i])[18:-1] + "'")
 
                 for row in cur.fetchall():
                     student_attendence.append(row)
@@ -4667,37 +4861,39 @@ class Gui:
 
             x = 0
             while x < len(student_id):
+                self.tree.insert("", "end", "",
+                                 values=("", "", "", str(student_id[x])[15:-1],
+                                         str(student_first_name[x])[16:-2] + ' ' + str(student_last_name[x])[15:-2],
+                                         str(student_attendence_flag[x])))
+
+                '''
                 self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + "  " + str(student_first_name[x])[
                                                                                         16:-2] + ' ' + str(
                     student_last_name[x])[15:-2] + ":      " + str(student_attendence_flag[x]) + '\n')
+                '''
                 x += 1
-            self.editAreaTable.insert(tk.INSERT, '\n\n\n')
-            i+=1
-
-
-
-
+            #self.editAreaTable.insert(tk.INSERT, '\n\n\n')
+            i += 1
 
         pass
 
-
-    def attendence_search_course(self):
+    def attendence_search_course_2(self):
         if self.section == 1 or self.section == 2:
-            self.search_btn_att.config( command=lambda: self.view_attendence_search_course())
+            self.search_btn_att.config(command=lambda: self.view_attendence_search_course_2())
             self.editAreaTable2.delete("1.0", END)
             self.editAreaTable2.insert(tk.INSERT, 'Input Course id to Search: ')
 
-    def attendence_search_timetable(self):
-        if self.section ==1 or self.section ==2:
-            self.search_btn_att.config(command=lambda: self.view_attendence_search())
+    def attendence_search_timetable_2(self):
+        if self.section == 1 or self.section == 2:
+            self.search_btn_att.config(command=lambda: self.view_attendence_search_2())
             self.editAreaTable2.delete("1.0", END)
             self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
-        elif self.section ==3:
-            self.search_btn_att.config( command=lambda: self.view_attendence_search_student())
+        elif self.section == 3:
+            self.search_btn_att.config(command=lambda: self.view_attendence_search_student_2())
             self.editAreaTable2.delete("1.0", END)
             self.editAreaTable2.insert(tk.INSERT, 'Input Timetable id to Search: ')
 
-    def view_attendence(self):
+    def view_attendence_2(self):
         self.del_list = ''
 
         self.left_frame.pack_forget()
@@ -4720,20 +4916,52 @@ class Gui:
         tk.Label(self.left_frame, bg='black', text='View Attendence',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
-        self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
-                                               font=("Helvetica", 15, "bold"))
-        self.editAreaTable.pack(fill="both", expand="yes", side="left")
+
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview",font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = ("1", "2", "3","4", "5","6")
+        self.tree.column("#0", width=120, minwidth=120)
+        self.tree.column("1", width=50, minwidth=50)
+        self.tree.column("2", width=120, minwidth=120)
+        self.tree.column("3", width=50, minwidth=50)
+        self.tree.column("4", width=50, minwidth=50)
+        self.tree.column("5", width=150, minwidth=150)
+        self.tree.column("6", width=200, minwidth=200)
+        #self.tree.column("five", width=100, minwidth=100)
+        #self.tree.column("six", width=100, minwidth=100)
 
 
-        if self.section == 2 :
-            self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20", command=lambda :self.view_attendence_all())
+        self.tree.heading("#0", text="Course ID&Name", anchor=tk.W)
+        self.tree.heading("1", text="Timetable ID", anchor=tk.W)
+        self.tree.heading("2", text="DateTime", anchor=tk.W)
+        self.tree.heading("3", text="Room", anchor=tk.W)
+        self.tree.heading("4", text="Student ID", anchor=tk.W)
+        self.tree.heading("5", text="Student Name", anchor=tk.W)
+        self.tree.heading("6", text="Attendence", anchor=tk.W)
+        #self.tree.heading("five", text="Student ID", anchor=tk.W)
+        #self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
+
+
+
+
+        if self.section == 2:
+            self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
+                               command=lambda: self.view_attendence_all_2())
         elif self.section == 3:
             self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
-                               command=lambda: self.view_attendence_all_student())
+                               command=lambda: self.view_attendence_all_student_2())
         else:
             self.btnTR1.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
-        self.btnTR2.config(text='Search by\nTimeTable ID', font=("Helvetica", 20, "bold "), bg="grey20", command=lambda:self.attendence_search_timetable())
-        self.btnTR3.config(text='Search by\nCourse ID', font=("Helvetica", 20, "bold "), bg="grey20",command=lambda:self.attendence_search_course())
+        self.btnTR2.config(text='Search by\nTimeTable ID', font=("Helvetica", 20, "bold "), bg="grey20",
+                           command=lambda: self.attendence_search_timetable_2())
+        self.btnTR3.config(text='Search by\nCourse ID', font=("Helvetica", 20, "bold "), bg="grey20",
+                           command=lambda: self.attendence_search_course_2())
         self.btnTR4.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR5.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
         self.btnTR6.config(text='', font=("Helvetica", 20, "bold "), bg="grey20")
@@ -4826,27 +5054,31 @@ class Gui:
         tk.Button(self.frameM8, text="", font=("Helvetica", 20, "bold "), fg="white", bg="slate blue", width=4,
                   height=2, command='').pack(
             side=tk.LEFT)
-        if self.section ==1 or self.section ==2:
-            self.search_btn_att=tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
-                    width=8, height=2, command=lambda: self.view_attendence_search_course())
+        if self.section == 1 or self.section == 2:
+            self.search_btn_att = tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white",
+                                            bg="dark green",
+                                            width=8, height=2, command=lambda: self.view_attendence_search_course_2())
             self.search_btn_att.pack(side=tk.LEFT)
-        elif self.section ==3:
-            self.search_btn_att=tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white", bg="dark green",
-                      width=8, height=2, command=lambda: self.view_attendence_search_course_student())
+        elif self.section == 3:
+            self.search_btn_att = tk.Button(self.frameM8, text="Search", font=("Helvetica", 20, "bold "), fg="white",
+                                            bg="dark green",
+                                            width=8, height=2,
+                                            command=lambda: self.view_attendence_search_course_student_2())
             self.search_btn_att.pack(side=tk.LEFT)
         self.editAreaTable2.insert(tk.INSERT, 'Input Course id to Search: ')
 
-        if self.section ==2 :
-            self.view_attendence_all()
-        elif self.section ==3:
-            self.view_attendence_all_student()
+        if self.section == 2:
+            self.view_attendence_all_2()
+        elif self.section == 3:
+            self.view_attendence_all_student_2()
 
         pass
 
 
 
-    def view_course_member_search_id(self):
 
+    def view_course_member_search_id(self):
+        self.tree.delete(*self.tree.get_children())
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -4908,7 +5140,7 @@ class Gui:
 
         if (self.section ==2 and str(staff_id[0])[13:-1] == str(self.id)) or self.section ==1 or section3_flag == True :
 
-
+            '''
             self.editAreaTable.delete("1.0", END)
             self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
@@ -4916,6 +5148,9 @@ class Gui:
                 teacher_last_name[0])[15:-2] + '\n')
             self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
             self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
+            '''
+            self.tree.insert("", "end", "", text=str(option_list)+ " " + str(course_name[0])[17:-2],values=("", ""))
+
 
             y = 0
             while y < len(student_id):
@@ -4937,15 +5172,20 @@ class Gui:
 
             x = 0
             while x < len(student_id):
+                '''
                 self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1] + ' ' + str(student_first_name[x])[
                                                                                        16:-2] + ' ' + str(
                     student_last_name[x])[15:-2] + '\n')
+                '''
+                self.tree.insert("", "end", "", values=(
+                str(student_id[x])[15:-1], str(student_first_name[x])[16:-2] + ' ' + str(student_last_name[x])[15:-2]))
 
                 x += 1
         pass
 
     def view_course_member_all(self):
-        self.editAreaTable.delete("1.0", END)
+        self.tree.delete(*self.tree.get_children())
+        #self.editAreaTable.delete("1.0", END)
         option_list = self.del_list
         self.del_list = ''
         self.editAreaTable3.delete("1.0", END)
@@ -5025,17 +5265,19 @@ class Gui:
         while i<len(course_id):
             #print(i)
 
-            self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1] + '\n')
+            #self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(course_id[i])[14:-1] + '\n')
 
+            self.tree.insert("", "end", "",text=str(course_id[i])[14:-1]+" "+str(course_name[i])[17:-2], values=("", "" ))
 
+            '''
             if self.section==2:
                 self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n\n')
             elif self.section==3:
                 self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[i])[17:-2] + '\n')
                 self.editAreaTable.insert(tk.INSERT, 'Staff ID: ' + str(staff_id[i])[13:-1]+ '\n')
                 self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[i])[16:-2]+" "+str(teacher_last_name[i])[15:-2] + '\n')
-
-            self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
+            '''
+            #self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
             cur = self.conn_fyp.cursor()
             student_id=[]
             cur.execute("select student_course.student_id from student_course inner join student on student_course.student_id = student.student_id where student_course.course_id = '"+str(course_id[i])[14:-1]+"'  order by student.last_name")
@@ -5061,52 +5303,18 @@ class Gui:
                 for row in cur.fetchall():
                     student_last_name.append(row)
                 # print(str(student_last_name[0])[15:-2])
-
+                '''
                 self.editAreaTable.insert(tk.INSERT, str(student_id[y])[15:-1] + ' ' + str(student_first_name[0])[
                                                                                        16:-2] + ' ' + str(
                     student_last_name[0])[15:-2] + '\n')
-
+                '''
+                self.tree.insert("", "end", "",values=(str(student_id[y])[15:-1], str(student_first_name[0])[16:-2] + ' ' + str(student_last_name[0])[15:-2] ))
                 y += 1
-            self.editAreaTable.insert(tk.INSERT,  '\n\n\n')
+            #self.editAreaTable.insert(tk.INSERT,  '\n\n\n')
 
             i+=1
 
-        '''
 
-        self.editAreaTable.delete("1.0", END)
-        self.editAreaTable.insert(tk.INSERT, 'Course id: ' + str(option_list) + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Course name: ' + str(course_name[0])[17:-2] + '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher name: ' + str(teacher_first_name[0])[16:-2]+' '+ str(teacher_last_name[0])[15:-2]+ '\n')
-        self.editAreaTable.insert(tk.INSERT, 'Teacher staff id: ' + str(staff_id[0])[13:-1] + '\n\n\n')
-        self.editAreaTable.insert(tk.INSERT, 'Student list (id/name)\n')
-
-        y=0
-        while y < len(student_id):
-            cur = self.conn_fyp.cursor()
-            cur.execute("select first_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
-
-            for row in cur.fetchall():
-                student_first_name.append(row)
-            #print(str(student_first_name[0])[16:-2])
-
-            cur = self.conn_fyp.cursor()
-            cur.execute("select last_name from student where student_id = '" + str(student_id[y])[15:-1] + "'")
-
-            for row in cur.fetchall():
-                student_last_name.append(row)
-            #print(str(student_last_name[0])[15:-2])
-
-            y+=1
-
-
-        x = 0
-        while x < len(student_id):
-            self.editAreaTable.insert(tk.INSERT, str(student_id[x])[15:-1]+' '+str(student_first_name[x])[16:-2]+' '+str(student_last_name[x])[15:-2] + '\n')
-
-
-
-            x += 1
-        '''
         pass
 
     def view_course_member(self):
@@ -5131,10 +5339,35 @@ class Gui:
 
         tk.Label(self.left_frame, bg='black', text='View Course Member',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
-
+        '''
+        
         self.editAreaTable = tkst.ScrolledText(self.left_frame, height=8, width=69, background="black", fg="white",
                                                font=("Helvetica", 15, "bold"))
         self.editAreaTable.pack(fill="both", expand="yes", side="left")
+        '''
+        style = ttk.Style(self.left_frame)
+        style.configure("Treeview", font=("Helvetica", 12, "bold "))
+        self.tree = ttk.Treeview(self.left_frame)
+        vsb = ttk.Scrollbar(self.left_frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
+        self.tree["columns"] = (  "4", "5" )
+        self.tree.column("#0", width=120, minwidth=120)
+        self.tree.column("4", width=50, minwidth=50)
+        self.tree.column("5", width=150, minwidth=150)
+
+        # self.tree.column("five", width=100, minwidth=100)
+        # self.tree.column("six", width=100, minwidth=100)
+
+
+        self.tree.heading("#0", text="Course ID&Name", anchor=tk.W)
+        self.tree.heading("4", text="Student ID", anchor=tk.W)
+        self.tree.heading("5", text="Student Name", anchor=tk.W)
+
+        # self.tree.heading("five", text="Student ID", anchor=tk.W)
+        # self.tree.heading("six", text="Attendence", anchor=tk.W)
+
+        self.tree.pack(fill="both", expand="yes", side="left")
 
         if self.section == 2 or self.section == 3:
             self.btnTR1.config(text="List All", font=("Helvetica", 20, "bold "), bg="grey20",
@@ -6040,6 +6273,12 @@ class Gui:
     def add_notification(self):
 
         self.left_frame.pack_forget()
+
+        try:
+            self.middle_frame.pack_forget()
+        except:
+            print("1")
+
         self.left_frame = Frame(self.root, background="black",
                                 borderwidth=5, relief="ridge",
                                 width=1000)
@@ -6117,8 +6356,9 @@ class Gui:
         i = 0
         while i < len(text_content):
             self.editAreaTable.insert(tk.INSERT, text_content[i] )
+            print(text_content[i])
             i += 1
-
+        self.editAreaTable.yview_pickplace("end")
         pass
 
 
@@ -6163,7 +6403,7 @@ class Gui:
         if file_content == []:
             print("1")
             file2 = open(file_name, "a")
-            file2.write(self.reply["Notification_time"]+'\n'+self.reply["Notification_content"] + '\n\n')
+            file2.write(self.reply["Notification_time"] + '\n' + self.reply["Notification_content"] + '\n\n'+'-'*150+'\n\n')
             file2.close()
 
         else:
@@ -6183,7 +6423,7 @@ class Gui:
                 i+=1
             if flag_ == False:
                 file2 = open(file_name, "a")
-                file2.write(self.reply["Notification_time"] + '\n' + self.reply["Notification_content"] + '\n\n')
+                file2.write(self.reply["Notification_time"] + '\n' + self.reply["Notification_content"] + '\n\n'+'-'*150+'\n\n')
                 file2.close()
 
             else:
@@ -6194,6 +6434,12 @@ class Gui:
         self.del_list=''
 
         self.left_frame.pack_forget()
+
+        try:
+            self.middle_frame.pack_forget()
+        except:
+            print("1")
+
         self.left_frame = Frame(self.root, background="black",
                                 borderwidth=5, relief="ridge",
                                 width=600)
@@ -6237,6 +6483,8 @@ class Gui:
 
 
         pass
+
+
     def main_page(self, section, order_id, table_id):
 
         self.add_list = ''
@@ -6408,7 +6656,8 @@ class Gui:
             self.btn_tb[0][26].config(text="Add Timetable", command=lambda: self.add_timetable())
             self.btn_tb[0][27].config(text="Modify Timetable", command=lambda: self.modify_timetable())
 
-            self.btn_tb[0][30].config(text="View Attendence", command=lambda: self.view_attendence())
+            self.btn_tb[0][30].config(text="View Attendence", command=lambda: self.view_attendence_2())
+            #self.btn_tb[0][31].config(text="View Attendence\nNew UI", command=lambda: self.view_attendence_2())
 
 
         #Teacher
@@ -6424,7 +6673,9 @@ class Gui:
 
             self.btn_tb[0][4].config(text="View Timetable", command=lambda: self.view_timetable())
 
-            self.btn_tb[0][5].config(text="View Attendence", command=lambda: self.view_attendence())
+            self.btn_tb[0][5].config(text="View Attendence", command=lambda: self.view_attendence_2())
+
+            #self.btn_tb[0][6].config(text="View Attendence\nNew UI", command=lambda: self.view_attendence_2())
 
         elif self.section == 3:
 
@@ -6434,7 +6685,9 @@ class Gui:
 
             self.btn_tb[0][2].config(text="View Timetable", command=lambda: self.view_timetable())
 
-            self.btn_tb[0][3].config(text="View Attendence", command=lambda: self.view_attendence())
+            self.btn_tb[0][3].config(text="View Attendence", command=lambda: self.view_attendence_2())
+
+            #self.btn_tb[0][4].config(text="View Attendence\nNew UI", command=lambda: self.view_attendence_2())
 
         if self.section == 1 or self.section == 2:
             self.btnnewnoti.config(command=lambda:self.add_notification())

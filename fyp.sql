@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2020 at 06:00 PM
+-- Generation Time: May 06, 2020 at 08:13 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -69,7 +69,10 @@ INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `day`, `time`, `ro
 (2, 2, '28-4-2020', '13:00', '103'),
 (3, 2, '12-3-2020', '11:30', '123'),
 (4, 2, '5-5-2020', '12:00', '101'),
-(5, 2, '3-1-2021', '08:30', '197');
+(5, 2, '3-1-2021', '08:30', '197'),
+(6, 1, '7-5-2020', '12:40', '129'),
+(7, 2, '5-7-2020', '11:30', '121'),
+(8, 2, '7-5-2020', '11:30', '121');
 
 -- --------------------------------------------------------
 
@@ -107,7 +110,8 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 (101, '2020-04-30 21:37:45.389520', 65, 1),
 (101, '2020-04-30 21:49:38.921620', 66, 2),
 (102, '2020-05-03 00:11:07.685656', 67, 2),
-(103, '2020-05-05 00:24:06.783712', 68, 4);
+(103, '2020-05-05 00:24:06.783712', 68, 4),
+(101, '2020-05-07 00:18:34.308211', 69, 6);
 
 -- --------------------------------------------------------
 
@@ -232,13 +236,13 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `login_record`
 --
 ALTER TABLE `login_record`
-  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `staff`
