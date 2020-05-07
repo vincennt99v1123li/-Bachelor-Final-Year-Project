@@ -655,8 +655,9 @@ class Gui:
 
 def main(id, window):
     root = tk.Tk()
-    Gui(root, id)
     window.destroy()
+    Gui(root, id)
+
     root.mainloop()
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2020 at 08:13 PM
+-- Generation Time: May 07, 2020 at 06:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -44,7 +44,8 @@ INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
 (4, 'D', 124),
 (5, 'E', 125),
 (6, 'F', 125),
-(7, 'G', 125);
+(7, 'G', 125),
+(8, 'Final Year Project', 125);
 
 -- --------------------------------------------------------
 
@@ -72,7 +73,9 @@ INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `day`, `time`, `ro
 (5, 2, '3-1-2021', '08:30', '197'),
 (6, 1, '7-5-2020', '12:40', '129'),
 (7, 2, '5-7-2020', '11:30', '121'),
-(8, 2, '7-5-2020', '11:30', '121');
+(8, 2, '7-5-2020', '11:30', '121'),
+(9, 2, '5-6-2020', '11:00', '123'),
+(10, 8, '5-7-2020', '15:00', '202');
 
 -- --------------------------------------------------------
 
@@ -111,7 +114,11 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 (101, '2020-04-30 21:49:38.921620', 66, 2),
 (102, '2020-05-03 00:11:07.685656', 67, 2),
 (103, '2020-05-05 00:24:06.783712', 68, 4),
-(101, '2020-05-07 00:18:34.308211', 69, 6);
+(101, '2020-05-07 00:18:34.308211', 69, 6),
+(101, '2020-05-07 16:23:35.245530', 70, 8),
+(101, '2020-05-07 21:50:03.206862', 71, 7),
+(101, '2020-05-07 21:50:15.271884', 72, 7),
+(101, '2020-05-07 21:56:50.117945', 73, 8);
 
 -- --------------------------------------------------------
 
@@ -184,8 +191,11 @@ CREATE TABLE `student_course` (
 INSERT INTO `student_course` (`student_id`, `course_id`) VALUES
 (101, 1),
 (101, 2),
+(101, 8),
 (102, 2),
 (102, 3),
+(102, 8),
+(103, 1),
 (103, 2);
 
 --
@@ -196,19 +206,23 @@ INSERT INTO `student_course` (`student_id`, `course_id`) VALUES
 -- Indexes for table `course`
 --
 ALTER TABLE `course`
-  ADD PRIMARY KEY (`course_id`);
+  ADD PRIMARY KEY (`course_id`),
+  ADD KEY `staff_id` (`staff_id`);
 
 --
 -- Indexes for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  ADD PRIMARY KEY (`time_table_id`);
+  ADD PRIMARY KEY (`time_table_id`),
+  ADD KEY `course_id` (`course_id`);
 
 --
 -- Indexes for table `login_record`
 --
 ALTER TABLE `login_record`
-  ADD PRIMARY KEY (`login_id`);
+  ADD PRIMARY KEY (`login_id`),
+  ADD KEY `student_id` (`student_id`,`time_table_id`),
+  ADD KEY `time_table_id` (`time_table_id`);
 
 --
 -- Indexes for table `staff`
@@ -223,6 +237,13 @@ ALTER TABLE `student`
   ADD PRIMARY KEY (`student_id`);
 
 --
+-- Indexes for table `student_course`
+--
+ALTER TABLE `student_course`
+  ADD KEY `student_id` (`student_id`,`course_id`),
+  ADD KEY `course_id` (`course_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -230,19 +251,19 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `login_record`
 --
 ALTER TABLE `login_record`
-  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `staff`
@@ -255,6 +276,36 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `student`
   MODIFY `student_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `course`
+--
+ALTER TABLE `course`
+  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
+
+--
+-- Constraints for table `course_timetable`
+--
+ALTER TABLE `course_timetable`
+  ADD CONSTRAINT `course_timetable_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`);
+
+--
+-- Constraints for table `login_record`
+--
+ALTER TABLE `login_record`
+  ADD CONSTRAINT `login_record_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `login_record_ibfk_2` FOREIGN KEY (`time_table_id`) REFERENCES `course_timetable` (`time_table_id`);
+
+--
+-- Constraints for table `student_course`
+--
+ALTER TABLE `student_course`
+  ADD CONSTRAINT `student_course_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `student_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

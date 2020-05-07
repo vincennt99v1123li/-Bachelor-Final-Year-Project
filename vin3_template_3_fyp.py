@@ -2861,7 +2861,7 @@ class Gui:
 
 
     def add_timetable_update(self):
-        sql = ("insert into `course_timetable` (`course_id`,`day`,`time`,`room`) values ( '" + str( self.option_list)+"','"+self.create_input4.get()+"-"+self.create_input3.get()+"-"+self.create_input5.get()+"','"+self.create_input6.get()+"','"+self.create_input7.get()+"')")
+        sql = ("insert into `course_timetable` (`course_id`,`day`,`time`,`room`) values ( '" + str( self.option_list)+"','"+self.create_input3.get()+"-"+self.create_input4.get()+"-"+self.create_input5.get()+"','"+self.create_input6.get()+"','"+self.create_input7.get()+"')")
 
         self.cur_fyp.execute(sql)
         self.cur_fyp.execute('commit')
@@ -4913,7 +4913,7 @@ class Gui:
 
                                )
 
-        tk.Label(self.left_frame, bg='black', text='View Attendence',
+        tk.Label(self.left_frame, bg='black', text='View Attendance',
                  font=("Helvetica", 20, "bold "), fg="white", borderwidth=5).pack()
 
 
@@ -5919,7 +5919,7 @@ class Gui:
                                      font=("Helvetica", 20, "bold "), fg="white", borderwidth=5)
             self.lable_pd.pack()
         elif page == 'train':
-            self.lable_pd = tk.Label(self.frameL1, bg='black', text='Face Trainning',
+            self.lable_pd = tk.Label(self.frameL1, bg='black', text='Face Training',
                                      font=("Helvetica", 20, "bold "), fg="white", borderwidth=5)
             self.lable_pd.pack()
 
@@ -6634,7 +6634,7 @@ class Gui:
         #Admin/Officer
         if self.section == 1:
             self.btn_tb[0][0].config(text="Face Capture", command=lambda: self.add_reco_template('cap'))
-            self.btn_tb[0][1].config(text="Face Trainning", command=lambda: self.add_reco_template('train'))
+            self.btn_tb[0][1].config(text="Face Training", command=lambda: self.add_reco_template('train'))
 
             self.btn_tb[0][5].config(text="Staff List", command=lambda: self.staff_list())
             self.btn_tb[0][6].config(text="New Staff", command=lambda: self.add_staff())
@@ -6656,7 +6656,7 @@ class Gui:
             self.btn_tb[0][26].config(text="Add Timetable", command=lambda: self.add_timetable())
             self.btn_tb[0][27].config(text="Modify Timetable", command=lambda: self.modify_timetable())
 
-            self.btn_tb[0][30].config(text="View Attendence", command=lambda: self.view_attendence_2())
+            self.btn_tb[0][30].config(text="View Attandence", command=lambda: self.view_attendence_2())
             #self.btn_tb[0][31].config(text="View Attendence\nNew UI", command=lambda: self.view_attendence_2())
 
 
