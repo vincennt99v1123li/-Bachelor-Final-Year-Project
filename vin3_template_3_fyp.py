@@ -5489,7 +5489,7 @@ class Gui:
             cur.execute(
                 "INSERT INTO staff(first_name, last_name,  sex, date_of_birth,position,password) VALUES ('" + str(
                     self.create_input1.get()) + "','" + str(self.create_input2.get()) + "','" + str(
-                    self.create_input3.get()) + "','" + str(str_birth) + "','"+str(self.create_input7.get())+"','N')")
+                    self.create_input3.get()) + "','" + str(str_birth) + "','"+str(self.create_input7.get())+"','123')")
             self.conn_fyp.commit()
 
         self.date_label.config(
@@ -5612,9 +5612,9 @@ class Gui:
         cur = self.conn_fyp.cursor()
         with self.conn_fyp.cursor() as cur:
             cur.execute(
-                "INSERT INTO student(first_name, last_name,  sex, date_of_birth,face_cap,face_train) VALUES ('" + str(
+                "INSERT INTO student(first_name, last_name,  sex, date_of_birth,face_cap,face_train,password) VALUES ('" + str(
                     self.create_input1.get()) + "','" + str(self.create_input2.get()) + "','" + str(
-                    self.create_input3.get()) + "','" + str(str_birth) +  "','N','N')")
+                    self.create_input3.get()) + "','" + str(str_birth) +  "','N','N','123')")
             self.conn_fyp.commit()
 
         self.date_label.config(
@@ -6149,7 +6149,7 @@ class Gui:
                                             password='',
                                             db='fyp',
                                             cursorclass=pymysql.cursors.DictCursor)
-                self.cur_fyp = self.db.cursor()
+                self.cur_fyp = self.db_fyp.cursor()
         else:
             self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Trained At Least Once, Trainning     " + str(
                     self.date.strftime('%d-%m-%Y') + '      '))
@@ -6173,7 +6173,7 @@ class Gui:
                                                 password='',
                                                 db='fyp',
                                                 cursorclass=pymysql.cursors.DictCursor)
-                self.cur_fyp = self.db.cursor()
+                self.cur_fyp = self.db_fyp.cursor()
 
 
         self.add_list=''
@@ -6229,7 +6229,7 @@ class Gui:
                                             password='',
                                             db='fyp',
                                             cursorclass=pymysql.cursors.DictCursor)
-                self.cur_fyp = self.db.cursor()
+                self.cur_fyp = self.db_fyp.cursor()
         else:
             self.date_label.config(text=str(self.user_name[0])[15:-2] + "      " +str(self.add_list)+str(first_name[0])[16:-2] + ":Has Been Captured      " + str(
                     self.date.strftime('%d-%m-%Y') + '      '))

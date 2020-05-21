@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2020 at 06:54 PM
+-- Generation Time: May 21, 2020 at 05:38 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -45,7 +45,10 @@ INSERT INTO `course` (`course_id`, `course_name`, `staff_id`) VALUES
 (5, 'E', 125),
 (6, 'F', 125),
 (7, 'G', 125),
-(8, 'Final Year Project', 125);
+(8, 'Final Year Project', 125),
+(10, 'Chinese', 124),
+(11, 'Engilsh', 125),
+(12, 'Project Management', 124);
 
 -- --------------------------------------------------------
 
@@ -75,7 +78,11 @@ INSERT INTO `course_timetable` (`time_table_id`, `course_id`, `day`, `time`, `ro
 (7, 2, '5-7-2020', '11:30', '121'),
 (8, 2, '7-5-2020', '11:30', '121'),
 (9, 2, '5-6-2020', '11:00', '123'),
-(10, 8, '5-7-2020', '15:00', '202');
+(10, 8, '5-7-2020', '15:00', '202'),
+(11, 11, '10-5-2020', '12:00', '123'),
+(12, 1, '22-8-2020', '12:00', '101'),
+(13, 2, '11-8-2020', '13:00', '142'),
+(14, 2, '15-5-2020', '16:00', '107');
 
 -- --------------------------------------------------------
 
@@ -118,7 +125,13 @@ INSERT INTO `login_record` (`student_id`, `Login_date`, `login_id`, `time_table_
 (101, '2020-05-07 16:23:35.245530', 70, 8),
 (101, '2020-05-07 21:50:03.206862', 71, 7),
 (101, '2020-05-07 21:50:15.271884', 72, 7),
-(101, '2020-05-07 21:56:50.117945', 73, 8);
+(101, '2020-05-07 21:56:50.117945', 73, 8),
+(101, '2020-05-08 16:31:48.924738', 74, 7),
+(101, '2020-05-10 21:19:50.867810', 75, 8),
+(103, '2020-05-11 15:00:03.934369', 76, 8),
+(103, '2020-05-11 15:01:00.627851', 77, 8),
+(104, '2020-05-15 15:36:36.523987', 78, 6),
+(101, '2020-05-15 15:45:40.881383', 79, 14);
 
 -- --------------------------------------------------------
 
@@ -144,7 +157,10 @@ INSERT INTO `staff` (`staff_id`, `password`, `first_name`, `last_name`, `positio
 (123, '123', 'Vin2', 'Li', 'Admin', 'M', '23-11-1999'),
 (124, '123', 'PandaEric', 'Poon', 'Teacher', 'M', '23-2-1999'),
 (125, '246', 'Pak', 'Wong', 'Teacher', 'M', '23-1-1990'),
-(126, '123', 'm.mky', 'Ma', 'Officer', 'F', '1-4-1999');
+(126, '123', 'm.mky', 'Ma', 'Officer', 'F', '1-4-1999'),
+(127, 'N', 'Marry', 'Chan', 'Teacher', 'F', '1-2-1999'),
+(128, 'N', 'Kan', 'Chen', 'Teacher', 'F', '11-11-1991'),
+(129, '123', 'Mandy', 'Wong', 'Officer', 'F', '4-4-1982');
 
 -- --------------------------------------------------------
 
@@ -171,7 +187,10 @@ INSERT INTO `student` (`first_name`, `last_name`, `sex`, `date_of_birth`, `stude
 ('Vincent', 'Li', 'M', '23-11-1999', 101, 'Y', 'Y', '123'),
 ('Ada', 'Chan', 'F', '28-10-1998', 102, 'Y', 'Y', '123'),
 ('hello3', 'Li', 'M', '23-11-1999', 103, 'Y', 'Y', '123'),
-('yo', 'wong', 'F', '11-4-2000', 104, 'Y', 'N', '123');
+('yo', 'wong', 'F', '11-4-2000', 104, 'Y', 'Y', '123'),
+('Paul', 'Wong', 'M', '3-5-1999', 112, 'N', 'N', '123'),
+('Ben', 'Wong', 'M', '12-2-2000', 113, 'N', 'N', '123'),
+('Paul', 'Chen', 'F', '11-11-1998', 114, 'N', 'N', '123');
 
 -- --------------------------------------------------------
 
@@ -192,11 +211,15 @@ INSERT INTO `student_course` (`student_id`, `course_id`) VALUES
 (101, 1),
 (101, 2),
 (101, 8),
+(101, 11),
 (102, 2),
 (102, 3),
 (102, 8),
+(102, 11),
 (103, 1),
-(103, 2);
+(103, 2),
+(112, 1),
+(113, 2);
 
 --
 -- Indexes for dumped tables
@@ -251,31 +274,31 @@ ALTER TABLE `student_course`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `course_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `course_timetable`
 --
 ALTER TABLE `course_timetable`
-  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `time_table_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `login_record`
 --
 ALTER TABLE `login_record`
-  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `login_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `staff_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `student_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- Constraints for dumped tables
